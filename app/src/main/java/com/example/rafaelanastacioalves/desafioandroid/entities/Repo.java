@@ -1,32 +1,20 @@
 package com.example.rafaelanastacioalves.desafioandroid.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-
 /**
  * Created by rafaelanastacioalves on 28/09/2015.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Repo implements Serializable {
+public class Repo {
 
-    @SerializedName("name")
     private String name;
 
-    @SerializedName("description")
     private String description;
 
-    @SerializedName("stargazers_count")
     private int stargazers_count;
 
-    @SerializedName("forks")
     private int forks;
 
-    @SerializedName("owner")
     private RepoOwner owner;
 
-    @SerializedName("pulls_url")
     private String pullsUrl;
     private String pictureFile;
 
