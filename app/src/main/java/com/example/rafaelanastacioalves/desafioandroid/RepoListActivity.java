@@ -4,23 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.example.rafaelanastacioalves.desafioandroid.dummy.DummyContent;
+import com.example.rafaelanastacioalves.desafioandroid.entities.Repos;
+import com.example.rafaelanastacioalves.desafioandroid.retrofit.GithubClient;
+import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator;
 
+import java.io.IOException;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * An activity representing a list of Repos. This activity
@@ -44,6 +51,9 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.tag("LifeCycles");
+        Timber.i("onCreate Activity");
+
         setContentView(R.layout.activity_repo_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -80,13 +90,43 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public Loader<String[]> onCreateLoader(int id, Bundle args) {
+        Timber.i("onCreateLoader");
         return new AsyncTaskLoader<String[]>(this){
+
+
+            @Override
+            protected void onStartLoading() {
+                Timber.i("onStartLoading");
+                forceLoad();
+                super.onStartLoading();
+            }
 
             @Override
             public String[] loadInBackground() {
+                GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
+                Call<Repos> call = githubClient.getRepos("language:Java",
+                        "starts",
+                        1
+                        );
+
+                try {
+                    Response<Repos> response = call.execute();
+
+                    if(response.isSuccessful() ){
+                        Timber.i("response Successful");
+                    }else{
+                        Timber.e(response.message(),null);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 return new String[0];
             }
         };
+
+
     }
 
     @Override
