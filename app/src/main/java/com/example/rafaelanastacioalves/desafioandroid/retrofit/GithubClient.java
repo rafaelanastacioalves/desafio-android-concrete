@@ -19,8 +19,9 @@ public interface GithubClient {
 
 
     // === Repositories === //
-    @GET("/search/repositories?q=language:Java")
+    @GET("/search/repositories")
     Call<Repos> getRepos(
+            @Query("q") String language,
             @Query("sort") String sort,
             @Query("page") int page
     );
