@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rafaelanastacioalves.desafioandroid.dummy.DummyContent;
+import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repos;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.GithubClient;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator;
@@ -46,6 +47,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private boolean mTwoPane;
     private LoaderManager.LoaderCallbacks<String[]> callback = RepoListActivity.this;
     private final int repoListLoaderId = 10;
+    private View mRecyclerView;
 
 
     @Override
@@ -69,9 +71,9 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             }
         });
 
-        View recyclerView = findViewById(R.id.repo_list);
-        assert recyclerView != null;
-//        setupRecyclerView((RecyclerView) recyclerView);
+        mRecyclerView = findViewById(R.id.repo_list);
+        assert mRecyclerView != null;
+//        setupRecyclerView((RecyclerView) mRecyclerView);
 
         if (findViewById(R.id.repo_detail_container) != null) {
             // The detail container view will be present only in the
@@ -85,53 +87,21 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS_2));
     }
 
     @Override
     public Loader<String[]> onCreateLoader(int id, Bundle args) {
         Timber.i("onCreateLoader");
-        return new AsyncTaskLoader<String[]>(this){
-
-
-            @Override
-            protected void onStartLoading() {
-                Timber.i("onStartLoading");
-                forceLoad();
-                super.onStartLoading();
-            }
-
-            @Override
-            public String[] loadInBackground() {
-                GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
-                Call<Repos> call = githubClient.getRepos("language:Java",
-                        "starts",
-                        1
-                        );
-
-                try {
-                    Response<Repos> response = call.execute();
-
-                    if(response.isSuccessful() ){
-                        Timber.i("response Successful");
-                    }else{
-                        Timber.e(response.message(),null);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return new String[0];
-            }
-        };
+        return new StringAsyncTaskLoader(this);
 
 
     }
 
     @Override
     public void onLoadFinished(Loader<String[]> loader, String[] data) {
-
+        DummyContent.populateWithStringArray(data);
+        setupRecyclerView((RecyclerView) mRecyclerView);
     }
 
     @Override
@@ -206,6 +176,58 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             public String toString() {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
+        }
+    }
+
+    private static class StringAsyncTaskLoader extends AsyncTaskLoader<String[]> {
+        private static String[] mStringArray;
+
+        public StringAsyncTaskLoader(Context context) {
+            super(context);
+        }
+
+
+        @Override
+        protected void onStartLoading() {
+            Timber.i("onStartLoading");
+            if (mStringArray == null){
+                forceLoad();
+            }else {
+                deliverResult(mStringArray);
+            }
+
+            super.onStartLoading();
+        }
+
+        @Override
+        public String[] loadInBackground() {
+            GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
+            Call<Repos> call = githubClient.getRepos("language:Java",
+                    "starts",
+                    1
+                    );
+
+            try {
+                Response<Repos> response = call.execute();
+
+                if(response.isSuccessful() ){
+                    Timber.i("response Successful");
+                    Repos repos = response.body();
+                    List<Repo> repoList = repos.getRepoList();
+                    mStringArray = new String[repos.getRepoList().size()];
+                    for (int i=0 ; i < mStringArray.length; i++ ){
+                        mStringArray[i] = repoList.get(i).getName();
+                    }
+                    return mStringArray;
+                }else{
+                    Timber.e(response.message(),null);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return new String[0];
         }
     }
 }

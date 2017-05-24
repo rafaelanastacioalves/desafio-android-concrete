@@ -17,6 +17,7 @@ public class DummyContent {
      * An array of sample (dummy) items.
      */
     public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static List<DummyItem> ITEMS_2 = new ArrayList<DummyItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
@@ -35,6 +36,15 @@ public class DummyContent {
     private static void addItem(DummyItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
+    }
+    public static void populateWithStringArray(String[] array){
+        for (String string : array){
+            ITEMS_2.add(createDummyItem(string));
+        }
+    }
+
+    private static DummyItem createDummyItem(String string) {
+        return new DummyItem("->", string, ".");
     }
 
     private static DummyItem createDummyItem(int position) {
