@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/repo_linear_layout_container"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
+        android:id="@+id/repo_linear_layout_item"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/repo_text_view_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/repo_text_view_description"
+            android:layout_weight="0.85"
+            android:ellipsize="end"
+            android:maxLines="2" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.pkmmte.view.CircularImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/placeholder_user"
+
+                android:id="@+id/repo_imageview_forks" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/repo_textview_number_forks" />
+
+            <com.pkmmte.view.CircularImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/placeholder_user"
+                android:id="@+id/repo_imageview_stars" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/repo_textview_number_stars" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="0.25">
+
+        <com.pkmmte.view.CircularImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/placeholder_user"
+            android:id="@+id/repo_textview_owner_photo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/repo_textview_owner_name"
+            android:ellipsize="end"
+            android:maxLength="6" />
+    </LinearLayout>
+
+
+</LinearLayout>
+
+    <include layout="@layout/view_divider_horizontal"/>
+
+</LinearLayout>

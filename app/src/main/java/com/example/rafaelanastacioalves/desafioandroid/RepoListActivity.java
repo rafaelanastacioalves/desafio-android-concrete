@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -38,16 +39,17 @@ import timber.log.Timber;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RepoListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String[]> {
+public class RepoListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repo>> {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-    private LoaderManager.LoaderCallbacks<String[]> callback = RepoListActivity.this;
+    private LoaderManager.LoaderCallbacks<List<Repo>> callback = RepoListActivity.this;
     private final int repoListLoaderId = 10;
-    private View mRecyclerView;
+    private RecyclerView mRecyclerView;
+    RepoListAdapter mRepoListAdapter;
 
 
     @Override
@@ -71,9 +73,9 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             }
         });
 
-        mRecyclerView = findViewById(R.id.repo_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.repo_list);
         assert mRecyclerView != null;
-//        setupRecyclerView((RecyclerView) mRecyclerView);
+        setupRecyclerView((RecyclerView) mRecyclerView);
 
         if (findViewById(R.id.repo_detail_container) != null) {
             // The detail container view will be present only in the
@@ -87,25 +89,36 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS_2));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        if(mRepoListAdapter != null){
+            mRepoListAdapter = new RepoListAdapter();
+        }
     }
 
     @Override
-    public Loader<String[]> onCreateLoader(int id, Bundle args) {
+    public Loader<List<Repo>> onCreateLoader(int id, Bundle args) {
         Timber.i("onCreateLoader");
-        return new StringAsyncTaskLoader(this);
+        return new ReposAsyncTaskLoader(this);
 
 
     }
 
     @Override
-    public void onLoadFinished(Loader<String[]> loader, String[] data) {
-        DummyContent.populateWithStringArray(data);
-        setupRecyclerView((RecyclerView) mRecyclerView);
+    public void onLoadFinished(Loader<List<Repo>> loader, List<Repo> data) {
+//        DummyContent.populateWithStringArray(data);
+//        setupRecyclerView((RecyclerView) mRecyclerView);
+        //TODO setar o adapter de forma que sete uma vez no começo e aqui só atualize os itens e
+        // dê um notify
+        mRepoListAdapter.setItems(data);
+        mRecyclerView.setAdapter(mRepoListAdapter);
+
+
+
     }
 
     @Override
-    public void onLoaderReset(Loader<String[]> loader) {
+    public void onLoaderReset(Loader<List<Repo>> loader) {
 
     }
 
@@ -179,10 +192,10 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         }
     }
 
-    private static class StringAsyncTaskLoader extends AsyncTaskLoader<String[]> {
-        private static String[] mStringArray;
+    private static class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
+        private static List<Repo> mRepoList;
 
-        public StringAsyncTaskLoader(Context context) {
+        public ReposAsyncTaskLoader(Context context) {
             super(context);
         }
 
@@ -190,17 +203,17 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         @Override
         protected void onStartLoading() {
             Timber.i("onStartLoading");
-            if (mStringArray == null){
+            if (mRepoList == null){
                 forceLoad();
             }else {
-                deliverResult(mStringArray);
+                deliverResult(mRepoList);
             }
 
             super.onStartLoading();
         }
 
         @Override
-        public String[] loadInBackground() {
+        public List<Repo> loadInBackground() {
             GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
             Call<Repos> call = githubClient.getRepos("language:Java",
                     "starts",
@@ -213,12 +226,8 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                 if(response.isSuccessful() ){
                     Timber.i("response Successful");
                     Repos repos = response.body();
-                    List<Repo> repoList = repos.getRepoList();
-                    mStringArray = new String[repos.getRepoList().size()];
-                    for (int i=0 ; i < mStringArray.length; i++ ){
-                        mStringArray[i] = repoList.get(i).getName();
-                    }
-                    return mStringArray;
+                    mRepoList = repos.getRepoList();
+                    return mRepoList;
                 }else{
                     Timber.e(response.message(),null);
                 }
@@ -227,7 +236,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                 e.printStackTrace();
             }
 
-            return new String[0];
+            return mRepoList;
         }
     }
 }
