@@ -91,8 +91,8 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        if(mRepoListAdapter != null){
-            mRepoListAdapter = new RepoListAdapter();
+        if(mRepoListAdapter == null){
+            mRepoListAdapter = new RepoListAdapter(this);
         }
     }
 
