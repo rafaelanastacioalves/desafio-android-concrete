@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.rafaelanastacioalves.desafioandroid.dummy.DummyContent;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repos;
+import com.example.rafaelanastacioalves.desafioandroid.listeners.EndlessRecyclerOnScrollListener;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.GithubClient;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator;
 
@@ -41,6 +42,8 @@ import timber.log.Timber;
  */
 public class RepoListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repo>> {
 
+    private static final int REPOS_LOADER_ID = 1;
+    private static final String PAGE_KEY = "PAGE_KEY";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -94,6 +97,21 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         if(mRepoListAdapter == null){
             mRepoListAdapter = new RepoListAdapter(this);
         }
+
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(
+                (LinearLayoutManager) recyclerView.getLayoutManager()
+        ) {
+            @Override
+            public void onLoadMore(int current_page) {
+                Timber.i("onLoadMore");
+                //TODO
+                Bundle bundle = new Bundle();
+                bundle.putInt(PAGE_KEY, current_page);
+                Timber.i("Asking to restart loader...");
+                getLoaderManager().restartLoader(REPOS_LOADER_ID,bundle,null);
+
+            }
+        });
     }
 
     @Override
@@ -194,14 +212,17 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     private static class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
         private static List<Repo> mRepoList;
+        private static int page = 1;
 
         public ReposAsyncTaskLoader(Context context) {
             super(context);
         }
 
 
+
         @Override
         protected void onStartLoading() {
+
             Timber.i("onStartLoading");
             if (mRepoList == null){
                 forceLoad();
@@ -217,7 +238,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
             Call<Repos> call = githubClient.getRepos("language:Java",
                     "starts",
-                    1
+                    page
                     );
 
             try {
