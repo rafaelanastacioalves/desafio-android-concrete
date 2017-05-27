@@ -27,6 +27,7 @@ import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -44,6 +45,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     private static final int REPOS_LOADER_ID = 1;
     private static final String PAGE_KEY = "PAGE_KEY";
+    private static final String LOAD_MORE_KEY = "LOAD_MORE_KEY";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -53,6 +55,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private final int repoListLoaderId = 10;
     private RecyclerView mRecyclerView;
     RepoListAdapter mRepoListAdapter;
+    private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
 
     @Override
@@ -97,27 +100,39 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         if(mRepoListAdapter == null){
             mRepoListAdapter = new RepoListAdapter(this);
         }
+        mRecyclerView.setAdapter(mRepoListAdapter);
 
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(
+
+        mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(
                 (LinearLayoutManager) recyclerView.getLayoutManager()
         ) {
             @Override
-            public void onLoadMore(int current_page) {
-                Timber.i("onLoadMore");
+            public void onLoadMore(int currentPage) {
+                Timber.i("onLoadMore: current page " + currentPage);
                 //TODO
                 Bundle bundle = new Bundle();
-                bundle.putInt(PAGE_KEY, current_page);
+                bundle.putInt(PAGE_KEY, currentPage);
+                bundle.putBoolean(LOAD_MORE_KEY, true);
                 Timber.i("Asking to restart loader...");
-                getLoaderManager().restartLoader(REPOS_LOADER_ID,bundle,null);
-
+                getSupportLoaderManager().restartLoader(REPOS_LOADER_ID, bundle, callback);
             }
-        });
+        };
+        recyclerView.addOnScrollListener(mEndlessRecyclerOnScrollListener);
     }
+
 
     @Override
     public Loader<List<Repo>> onCreateLoader(int id, Bundle args) {
         Timber.i("onCreateLoader");
-        return new ReposAsyncTaskLoader(this);
+        if(args !=null ) {
+            int page = args.getInt(PAGE_KEY,1);
+            Boolean isLoadingMore = args.getBoolean(LOAD_MORE_KEY,false);
+            Timber.i("isLoadingMore: " + isLoadingMore);
+            return new ReposAsyncTaskLoader(this, page, isLoadingMore);
+
+        }else{
+            return new ReposAsyncTaskLoader(this);
+        }
 
 
     }
@@ -128,8 +143,13 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 //        setupRecyclerView((RecyclerView) mRecyclerView);
         //TODO setar o adapter de forma que sete uma vez no começo e aqui só atualize os itens e
         // dê um notify
-        mRepoListAdapter.setItems(data);
-        mRecyclerView.setAdapter(mRepoListAdapter);
+        if(loader instanceof ReposAsyncTaskLoader){
+            int current_page = ((ReposAsyncTaskLoader)loader).getPage();
+            mEndlessRecyclerOnScrollListener.setCurrentPage(current_page);
+            mRepoListAdapter.setItems(data);
+
+        }
+
 
 
 
@@ -137,6 +157,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public void onLoaderReset(Loader<List<Repo>> loader) {
+        Timber.i("onLoaderReset");
 
     }
 
@@ -213,10 +234,33 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private static class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
         private static List<Repo> mRepoList;
         private static int page = 1;
+        private static AtomicBoolean LOAD_MORE = new AtomicBoolean(false);
 
         public ReposAsyncTaskLoader(Context context) {
             super(context);
         }
+
+        /**
+         *
+         * @return the current page the loader is able to load
+         */
+        public int getPage(){
+            return page;
+        }
+
+        /**
+         * Constructor in case we need load more. So we specify the status and new page to load
+         * @param context
+         * @param page
+         * @param isLoadingMore
+         */
+        public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore){
+            super(context);
+            this.page = page;
+            this.LOAD_MORE.set(isLoadingMore);
+        }
+
+
 
 
 
@@ -224,9 +268,17 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         protected void onStartLoading() {
 
             Timber.i("onStartLoading");
-            if (mRepoList == null){
+            if (mRepoList == null) {
+                if (LOAD_MORE.get() == true) {
+                    Timber.w("LOAD_MORE está como true! Não deveria com lista nula...");
+                }
+                // if we have no list, we start from page 1
+                page = 1;
                 forceLoad();
-            }else {
+            } else if (LOAD_MORE.get()) {
+                Timber.i("page: " + page);
+                forceLoad();
+            } else {
                 deliverResult(mRepoList);
             }
 

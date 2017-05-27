@@ -42,6 +42,7 @@ public abstract class RecyclerViewListAdapter<V, R, R1> extends RecyclerView.Ada
         for(int i=0; i<items.size(); i++){
             this.items.add(items.get(i));
         }
+        notifyDataSetChanged();
     }
 
     public RecyclerViewClickListener getClickListener() {
