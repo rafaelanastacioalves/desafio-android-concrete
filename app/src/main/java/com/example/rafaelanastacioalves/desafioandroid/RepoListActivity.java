@@ -41,7 +41,7 @@ import timber.log.Timber;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RepoListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repo>> {
+public class RepoListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repo>>, RecyclerViewClickListener {
 
     private static final int REPOS_LOADER_ID = 1;
     private static final String PAGE_KEY = "PAGE_KEY";
@@ -56,6 +56,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private RecyclerView mRecyclerView;
     RepoListAdapter mRepoListAdapter;
     private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
+    private RecyclerViewClickListener clickListener = this;
 
 
     @Override
@@ -77,6 +78,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
+
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.repo_list);
@@ -97,10 +99,11 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        if(mRepoListAdapter == null){
+        if (mRepoListAdapter == null) {
             mRepoListAdapter = new RepoListAdapter(this);
         }
-        mRecyclerView.setAdapter(mRepoListAdapter);
+        mRepoListAdapter.setRecyclerViewClickListener(clickListener);
+        recyclerView.setAdapter(mRepoListAdapter);
 
 
         mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(
@@ -124,13 +127,13 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     @Override
     public Loader<List<Repo>> onCreateLoader(int id, Bundle args) {
         Timber.i("onCreateLoader");
-        if(args !=null ) {
-            int page = args.getInt(PAGE_KEY,1);
-            Boolean isLoadingMore = args.getBoolean(LOAD_MORE_KEY,false);
+        if (args != null) {
+            int page = args.getInt(PAGE_KEY, 1);
+            Boolean isLoadingMore = args.getBoolean(LOAD_MORE_KEY, false);
             Timber.i("isLoadingMore: " + isLoadingMore);
             return new ReposAsyncTaskLoader(this, page, isLoadingMore);
 
-        }else{
+        } else {
             return new ReposAsyncTaskLoader(this);
         }
 
@@ -143,14 +146,12 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 //        setupRecyclerView((RecyclerView) mRecyclerView);
         //TODO setar o adapter de forma que sete uma vez no começo e aqui só atualize os itens e
         // dê um notify
-        if(loader instanceof ReposAsyncTaskLoader){
-            int current_page = ((ReposAsyncTaskLoader)loader).getPage();
+        if (loader instanceof ReposAsyncTaskLoader) {
+            int current_page = ((ReposAsyncTaskLoader) loader).getPage();
             mEndlessRecyclerOnScrollListener.setCurrentPage(current_page);
             mRepoListAdapter.setItems(data);
 
         }
-
-
 
 
     }
@@ -158,6 +159,29 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     @Override
     public void onLoaderReset(Loader<List<Repo>> loader) {
         Timber.i("onLoaderReset");
+
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        Repo repo = mRepoListAdapter.getItems().get(position);
+
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putString(RepoDetailFragment.ARG_CREATOR, repo.getOwner().getLogin());
+            arguments.putString(RepoDetailFragment.ARG_REPOSITORY, repo.getName());
+            RepoDetailFragment fragment = new RepoDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.repo_detail_container, fragment)
+                    .commit();
+        } else {
+            Intent i = new Intent(this,RepoDetailActivity.class);
+            i.putExtra(RepoDetailFragment.ARG_CREATOR, repo.getOwner().getLogin() );
+            i.putExtra(RepoDetailFragment.ARG_REPOSITORY, repo.getName() );
+            startActivity(i);
+        }
+
 
     }
 
@@ -189,7 +213,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(RepoDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(RepoDetailFragment.ARG_CREATOR, holder.mItem.id);
                         RepoDetailFragment fragment = new RepoDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -198,7 +222,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, RepoDetailActivity.class);
-                        intent.putExtra(RepoDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra(RepoDetailFragment.ARG_CREATOR, holder.mItem.id);
 
                         context.startActivity(intent);
                     }
@@ -241,27 +265,24 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         }
 
         /**
-         *
          * @return the current page the loader is able to load
          */
-        public int getPage(){
+        public int getPage() {
             return page;
         }
 
         /**
          * Constructor in case we need load more. So we specify the status and new page to load
+         *
          * @param context
          * @param page
          * @param isLoadingMore
          */
-        public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore){
+        public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore) {
             super(context);
             this.page = page;
             this.LOAD_MORE.set(isLoadingMore);
         }
-
-
-
 
 
         @Override
@@ -291,18 +312,18 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             Call<Repos> call = githubClient.getRepos("language:Java",
                     "starts",
                     page
-                    );
+            );
 
             try {
                 Response<Repos> response = call.execute();
 
-                if(response.isSuccessful() ){
+                if (response.isSuccessful()) {
                     Timber.i("response Successful");
                     Repos repos = response.body();
                     mRepoList = repos.getRepoList();
                     return mRepoList;
-                }else{
-                    Timber.e(response.message(),null);
+                } else {
+                    Timber.e(response.message(), null);
                 }
 
             } catch (IOException e) {

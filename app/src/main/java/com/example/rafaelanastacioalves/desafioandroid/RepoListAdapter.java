@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,7 +50,7 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
 }
 
 
- class RepoViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+ class RepoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     LinearLayout container_linear_layout;
     RecyclerViewClickListener aRecyclerViewListener;
@@ -123,6 +122,7 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
 
     @Override
     public void onClick(View v) {
+        int position = getAdapterPosition();
         aRecyclerViewListener.onClick(v, getAdapterPosition());
 
     }
