@@ -106,6 +106,7 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
                 .resize(50,50)
                 .placeholder(R.drawable.placeholder_user)
                 .into(repo_owner_imageview);
+        repo_owner_imageview.setContentDescription(aRepo.getName());
 
         Picasso.with(context)
                 .load(R.drawable.git_icon_forks_black)
@@ -118,6 +119,8 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
                 .into(repo_stars_imageview);
 
         container_linear_layout.setTag(aRepo);
+        container_linear_layout.setContentDescription(aRepo.getName());
+
     }
 
     @Override
