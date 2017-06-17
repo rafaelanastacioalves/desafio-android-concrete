@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/pull_list_fragment"
+    tools:context=".RepoDetailActivity"
     >
 
     <android.support.v7.widget.RecyclerView
@@ -11,5 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
+        tools:listitem="@layout/pull_viewholder"
         />
 </LinearLayout>
