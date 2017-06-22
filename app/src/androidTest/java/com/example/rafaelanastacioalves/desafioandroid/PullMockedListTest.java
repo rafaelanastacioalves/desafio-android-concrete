@@ -53,21 +53,30 @@ public class PullMockedListTest {
     @Rule
     public IntentsTestRule<RepoDetailActivity> mRepoListTestRule = new IntentsTestRule<RepoDetailActivity>(RepoDetailActivity.class, true, false);
 
-    private MockWebServer server;
-
+    private final static MockWebServer server  = new MockWebServer();;
 
     @Before
     public void setUp() throws Exception {
-        Timber.i("setUp");
-        server = new MockWebServer();
-        server.start();
+        try {
+            server.start(0);
+
+        }catch (IllegalStateException e){
+            // alrealdy started: nothing to do
+        }
         InstrumentationRegistry.registerInstance(InstrumentationRegistry.getInstrumentation(),new Bundle());
         Constants.API_BASE_URL = server.url("/").toString();
+        Timber.i("setUp with API_BASE_URL: " + Constants.API_BASE_URL);
+
 
 //        intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
 
     }
-
+    @After
+    public void tearDown() throws Exception {
+        Timber.i("tearDown");
+        server.shutdown();
+        //server = null;
+    }
 
 
 
@@ -136,11 +145,6 @@ public class PullMockedListTest {
 //        Intents.release();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        Timber.i("tearDown");
-        server.shutdown();
-        server = null;
-    }
+
 
 }
