@@ -35,7 +35,7 @@ import timber.log.Timber;
  * in two-pane mode (on tablets) or a {@link RepoDetailActivity}
  * on handsets.
  */
-public class RepoDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Pull>>, RecyclerViewClickListener  {
+public class RepoDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Pull>>, RecyclerViewClickListener {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -81,19 +81,17 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         mRepositoryString = getArguments().getString(ARG_REPOSITORY);
 
         Bundle bundle = new Bundle();
-        bundle.putString(CREATOR_KEY_LOADER,mCreatorString);
-        bundle.putString(REPOSITORY_KEY_LOADER,mRepositoryString);
+        bundle.putString(CREATOR_KEY_LOADER, mCreatorString);
+        bundle.putString(REPOSITORY_KEY_LOADER, mRepositoryString);
 
         getLoaderManager().initLoader(PULL_LIST_LOADER, bundle, this);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pulls_list_fragment, container, false);
-        ButterKnife.bind(this,rootView);
+        ButterKnife.bind(this, rootView);
 
         setupRecyclerView(mPullsListRecyclerView);
         return rootView;
@@ -108,19 +106,19 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         }
         mPullsListAdapter.setRecyclerViewClickListener(clickListener);
         recyclerView.setAdapter(mPullsListAdapter);
-   }
+    }
 
 
     @Override
     public Loader<List<Pull>> onCreateLoader(int id, Bundle args) {
         String creator = args.getString(CREATOR_KEY_LOADER);
         String repository = args.getString(REPOSITORY_KEY_LOADER);
-        return new PullListAsyncTaskLoader(getContext(), repository,creator);
+        return new PullListAsyncTaskLoader(getContext(), repository, creator);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Pull>> loader, List<Pull> data) {
-        if(loader instanceof  PullListAsyncTaskLoader) {
+        if (loader instanceof PullListAsyncTaskLoader) {
             mPullsListAdapter.setItems(data);
         }
     }
@@ -134,8 +132,8 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onClick(View view, int position) {
 
-        Pull aPull = (Pull)view.getTag();
-        Timber.i("Url: " +  Uri.parse(aPull.getPullUrl()) );
+        Pull aPull = (Pull) view.getTag();
+        Timber.i("Url: " + Uri.parse(aPull.getPullUrl()));
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(aPull.getPullUrl()));
         startActivity(browserIntent);
     }
@@ -150,7 +148,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         public PullListAsyncTaskLoader(Context context, String repository, String creator) {
             super(context);
             mRepository = repository;
-            mCreator = creator                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ;
+            mCreator = creator;
 
         }
 

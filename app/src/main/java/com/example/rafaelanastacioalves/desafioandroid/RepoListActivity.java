@@ -82,7 +82,6 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.repo_list);
-        assert mRecyclerView != null;
         setupRecyclerView((RecyclerView) mRecyclerView);
 
         if (findViewById(R.id.repo_detail_container) != null) {
@@ -290,7 +289,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
             Timber.i("onStartLoading");
             if (mRepoList == null) {
-                if (LOAD_MORE.get() == true) {
+                if (LOAD_MORE.get()) {
                     Timber.w("LOAD_MORE está como true! Não deveria com lista nula...");
                 }
                 // if we have no list, we start from page 1
