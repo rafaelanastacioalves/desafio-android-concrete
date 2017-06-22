@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * An activity representing a single Repo detail screen. This
@@ -45,9 +46,12 @@ public class RepoDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+            Timber.i("RepoDetailFragment ARG CREATOR: " + getIntent().getStringExtra(RepoDetailFragment.ARG_CREATOR));
             Bundle arguments = new Bundle();
             arguments.putString(RepoDetailFragment.ARG_CREATOR,
                     getIntent().getStringExtra(RepoDetailFragment.ARG_CREATOR));
+
+            Timber.i("RepoDetailFragment ARG REPOSITORY: " + getIntent().getStringExtra(RepoDetailFragment.ARG_REPOSITORY));
             arguments.putString(RepoDetailFragment.ARG_REPOSITORY,
                     getIntent().getStringExtra(RepoDetailFragment.ARG_REPOSITORY));
             RepoDetailFragment fragment = new RepoDetailFragment();

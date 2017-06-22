@@ -110,6 +110,7 @@ public class RepoMockedListTest {
         onView(withId(R.id.pull_list_fragment)).check(matches(isDisplayed()));
     }
 
+
     @After
     public void tearDown() throws Exception {
         server.shutdown();

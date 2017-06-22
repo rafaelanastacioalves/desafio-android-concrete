@@ -68,9 +68,11 @@ class PullViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
     public void bind(Pull aPull, Context context) {
         pullTextViewDescription.setText(aPull.getBody());
+        pullLinearLayoutContainer.setContentDescription("Pull Request number " + (getAdapterPosition() + 1));
 
         pullTextViewTitle.setText(aPull.getTitle());
         pullTexViewtUserName.setText(aPull.getPullUser().getLogin());
+        pullTexViewtUserName.setHint(aPull.getPullUser().getLogin()+getAdapterPosition());
 
 
         Picasso.with(context)

@@ -135,7 +135,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     public void onClick(View view, int position) {
 
         Pull aPull = (Pull)view.getTag();
-
+        Timber.i("Url: " +  Uri.parse(aPull.getPullUrl()) );
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(aPull.getPullUrl()));
         startActivity(browserIntent);
     }
