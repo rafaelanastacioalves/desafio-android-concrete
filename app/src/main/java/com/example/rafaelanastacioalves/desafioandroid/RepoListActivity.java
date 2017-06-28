@@ -155,9 +155,13 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     }
 
+    public void resetData(){
+
+    }
+
     @Override
     public void onLoaderReset(Loader<List<Repo>> loader) {
-        Timber.i("onLoaderReset");
+        mRepoListAdapter.setItems(null);
 
     }
 
@@ -299,6 +303,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                 Timber.i("page: " + page);
                 forceLoad();
             } else {
+                Timber.i("we already have the result!");
                 deliverResult(mRepoList);
             }
 
