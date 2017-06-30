@@ -26,6 +26,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
+            android:textColor="@color/color_blue_bold"
+            android:textStyle="bold"
             android:id="@+id/repo_text_view_title" />
 
         <TextView
@@ -43,11 +45,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.pkmmte.view.CircularImageView
+            <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/placeholder_user"
-                app:selector_color="@color/colorAccent"
+                android:src="@drawable/git_icon_forks_black"
+                android:tint="@color/colorAccent"
                 android:id="@+id/repo_imageview_forks" />
 
             <TextView
@@ -59,10 +61,11 @@
                 android:text="-"
                 android:id="@+id/repo_textview_number_forks" />
 
-            <com.pkmmte.view.CircularImageView
+            <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/placeholder_user"
+                android:src="@drawable/git_icon_star_black"
+                android:tint="@color/colorAccent"
                 android:id="@+id/repo_imageview_stars" />
 
             <TextView
@@ -96,6 +99,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/color_blue_light"
+            android:textStyle="bold"
             android:text="Small Text"
             android:id="@+id/repo_textview_owner_name"
             android:ellipsize="end"

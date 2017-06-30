@@ -65,8 +65,6 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
 
 
     CircularImageView repo_owner_imageview;
-    CircularImageView repo_forks_imageview;
-    CircularImageView repo_stars_imageview;
 
 
 
@@ -84,8 +82,6 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
 
 
         repo_owner_imageview = (CircularImageView) itemView.findViewById(R.id.repo_textview_owner_photo);
-        repo_forks_imageview = (CircularImageView) itemView.findViewById(R.id.repo_imageview_forks);
-        repo_stars_imageview = (CircularImageView) itemView.findViewById(R.id.repo_imageview_stars);
 
         container_linear_layout.setOnClickListener(this);
     }
@@ -108,15 +104,8 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
                 .into(repo_owner_imageview);
         repo_owner_imageview.setContentDescription(aRepo.getName());
 
-        Picasso.with(context)
-                .load(R.drawable.git_icon_forks_black)
-                .resize(30, 30)
-                .into(repo_forks_imageview);
 
-        Picasso.with(context)
-                .load(R.drawable.git_icon_star_black)
-                .resize(30,30)
-                .into(repo_stars_imageview);
+
 
         container_linear_layout.setTag(aRepo);
         container_linear_layout.setContentDescription(aRepo.getName());
