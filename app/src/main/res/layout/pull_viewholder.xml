@@ -9,7 +9,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="@dimen/default_internal_margin">
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,16 +55,19 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/color_blue_light"
                 android:textStyle="bold"
+                android:layout_marginStart="@dimen/default_margin"
                 android:text="@string/small_text"
                 android:ellipsize="end"
                 android:maxLength="22"
-                android:id="@+id/pull_textview_owner_username" />
+                android:id="@+id/pull_textview_owner_username"
+                android:layout_marginLeft="@dimen/between_items_margin" />
 
         </LinearLayout>
 
     </LinearLayout>
-    <include layout="@layout/view_divider_horizontal"/>
 
 
 </LinearLayout>
+    <include layout="@layout/view_divider_horizontal"/>
+
 </LinearLayout>

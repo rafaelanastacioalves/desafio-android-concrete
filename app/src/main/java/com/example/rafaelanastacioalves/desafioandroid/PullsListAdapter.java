@@ -77,7 +77,8 @@ class PullViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
         Picasso.with(context)
                 .load(aPull.getPullUser().getAvatarUrl())
-                .resize(50, 50)
+                .resize(150, 150)
+                .centerInside()
                 .placeholder(R.drawable.placeholder_user)
                 .into(circularImageView);
 
