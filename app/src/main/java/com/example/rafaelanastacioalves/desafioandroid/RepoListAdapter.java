@@ -99,7 +99,8 @@ public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHo
 
         Picasso.with(context)
                 .load(aRepo.getOwner().getAvatarUrl())
-                .resize(50,50)
+                .resize(100,100)
+                .centerInside()
                 .placeholder(R.drawable.placeholder_user)
                 .into(repo_owner_imageview);
         repo_owner_imageview.setContentDescription(aRepo.getName());

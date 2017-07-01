@@ -8,18 +8,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="fill_parent"
+    android:layout_marginTop="@dimen/default_internal_margin"
+    android:layout_marginBottom="@dimen/default_internal_margin"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.75"
+        android:layout_weight="0.65"
         android:id="@+id/repo_linear_layout_item"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,11 +30,13 @@
             android:id="@+id/repo_text_view_title" />
 
         <TextView
+            android:id="@+id/repo_text_view_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:layout_marginBottom="@dimen/default_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/repo_text_view_description"
+            tools:text="@string/fake_description_text"
             android:layout_weight="0.85"
             android:ellipsize="end"
             android:maxLines="2" />
@@ -46,8 +47,9 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:src="@drawable/git_icon_forks_black"
                 android:tint="@color/colorAccent"
                 android:id="@+id/repo_imageview_forks" />
@@ -55,27 +57,39 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginStart="@dimen/between_items_margin"
+                android:layout_marginLeft="@dimen/between_items_margin"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorAccent"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
                 tools:text="100"
                 android:text="-"
                 android:id="@+id/repo_textview_number_forks" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="@dimen/default_internal_margin"
                 android:src="@drawable/git_icon_star_black"
                 android:tint="@color/colorAccent"
                 android:id="@+id/repo_imageview_stars" />
 
             <TextView
                 tools:text="100"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/colorAccent"
+                android:layout_marginStart="@dimen/between_items_margin"
+                android:layout_marginLeft="@dimen/between_items_margin"
                 android:text="-"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/repo_textview_number_stars" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/repo_textview_number_stars"
+                />
 
         </LinearLayout>
 
@@ -85,8 +99,8 @@
         android:orientation="vertical"
         android:layout_width="0dip"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_weight="0.25">
+        android:gravity="center_horizontal"
+        android:layout_weight="0.35">
 
         <com.pkmmte.view.CircularImageView
             android:layout_width="50dp"
@@ -96,15 +110,15 @@
             android:id="@+id/repo_textview_owner_photo" />
 
         <TextView
+            android:id="@+id/repo_textview_owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/color_blue_light"
             android:textStyle="bold"
-            android:text="Small Text"
-            android:id="@+id/repo_textview_owner_name"
+            android:text="@string/small_text"
             android:ellipsize="end"
-            android:maxLength="6" />
+            android:maxLength="22" />
     </LinearLayout>
 
 

@@ -32,6 +32,8 @@ public class RepoDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getIntent().getStringExtra(RepoDetailFragment.ARG_REPOSITORY));
+
         }
 
         // savedInstanceState is non-null when there is fragment state
@@ -60,6 +62,7 @@ public class RepoDetailActivity extends AppCompatActivity {
                     .add(R.id.repo_detail_container, fragment)
                     .commit();
         }
+
     }
 
     @Override
