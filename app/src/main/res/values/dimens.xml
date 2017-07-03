@@ -13,4 +13,6 @@
     <dimen name="divider_height">1dp</dimen>
     <dimen name="spacing_four">4dp</dimen>
     <dimen name="between_items_margin">2dp</dimen>
+    <dimen name="default_material_screen_edge_margin">16dp</dimen>
+    <dimen name="material_appbar_elevation">8dp</dimen>
 </resources>
