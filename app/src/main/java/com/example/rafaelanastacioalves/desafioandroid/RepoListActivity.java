@@ -119,7 +119,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         if (args != null) {
             int page = args.getInt(PAGE_KEY, 1);
             Boolean isLoadingMore = args.getBoolean(LOAD_MORE_KEY, false);
-            Timber.i("isLoadingMore: " + isLoadingMore);
+            Timber.i("onCreateLooader: isLoadingMore: " + isLoadingMore);
             return new ReposAsyncTaskLoader(this, page, isLoadingMore);
 
         } else {
@@ -151,6 +151,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public void onLoaderReset(Loader<List<Repo>> loader) {
+        Timber.i("onLoaderReset");
         mRepoListAdapter.setItems(null);
 
     }
@@ -273,6 +274,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
          */
         public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore) {
             super(context);
+            Timber.i("new AsyncTaskLoader + loadingMore: " + isLoadingMore);
             this.page = page;
             this.LOAD_MORE.set(isLoadingMore);
         }
@@ -301,7 +303,18 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         }
 
         @Override
+        protected void onStopLoading() {
+            super.onStopLoading();
+            Timber.i("onStopLoading");
+            // if we were loading more, we now set status as false (not loading more)
+            if (LOAD_MORE.get()){
+                LOAD_MORE.set(false);
+            }
+        }
+
+        @Override
         public List<Repo> loadInBackground() {
+            Timber.i("ReposAsyncTaskLoader loadInBackground");
             GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
             Call<Repos> call = githubClient.getRepos("language:Java",
                     "starts",

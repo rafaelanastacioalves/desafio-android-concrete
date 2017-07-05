@@ -18,9 +18,11 @@ import android.view.ViewGroup;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Pull;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.GithubClient;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator;
+import com.orhanobut.hawk.Hawk;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -139,16 +141,21 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
     private static class PullListAsyncTaskLoader extends AsyncTaskLoader<List<Pull>> {
-        private static List<Pull> mPullList;
+        private List<Pull> mPullList;
 
         private static String mRepository;
         private static String mCreator;
+        private String mPersistenceKey;
+        private Date mLastUpdate;
+        private String mLastUpdatedForPullRequestKey;
 
 
         public PullListAsyncTaskLoader(Context context, String repository, String creator) {
             super(context);
             mRepository = repository;
             mCreator = creator;
+            mPersistenceKey = mCreator+"-"+mRepository;
+            mLastUpdatedForPullRequestKey = mCreator+"-"+mRepository+"-"+"mLastUpdate";
 
         }
 
@@ -159,8 +166,14 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             Timber.i("onStartLoading");
 
             // we reset every time we start loading. Caching logic decisions later..
-            mPullList = null;
-            forceLoad();
+            mPullList = Hawk.get(mPersistenceKey);
+            mLastUpdate = Hawk.get(mLastUpdatedForPullRequestKey);
+            if (mPullList == null){
+                forceLoad();
+            }else {
+                Timber.i("we already have the result!");
+                deliverResult(mPullList);
+            }
             super.onStartLoading();
         }
 
@@ -176,6 +189,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
                     Timber.i("response Successful");
                     ArrayList<Pull> pulls = response.body();
                     mPullList = pulls;
+                    Hawk.put(mPersistenceKey, mPullList);
                     return mPullList;
                 } else {
                     Timber.e(response.message(), null);

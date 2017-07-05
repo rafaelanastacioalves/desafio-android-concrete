@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.example.rafaelanastacioalves.desafioandroid.BuildConfig;
+import com.orhanobut.hawk.Hawk;
+import com.squareup.picasso.Picasso;
 
 import timber.log.Timber;
 
@@ -17,9 +19,15 @@ public class MainApplication extends Application {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Picasso.with(getApplicationContext())
+                    .setIndicatorsEnabled(true);
+            Picasso.with(getApplicationContext())
+                    .setLoggingEnabled(true);
         } else {
             Timber.plant(new CrashReportingTree());
         }
+
+        Hawk.init(this).build();
     }
 
     /** A tree which logs important information for crash reporting. */
