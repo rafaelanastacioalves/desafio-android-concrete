@@ -11,12 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.rafaelanastacioalves.desafioandroid.dummy.DummyContent;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repos;
 import com.example.rafaelanastacioalves.desafioandroid.listeners.EndlessRecyclerOnScrollListener;
@@ -145,7 +141,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
                 }else{
                     // if we're first time loading data
-                    showEmptyList();
+                    mRepoListAdapter.setItems(null);
                 }
             }else{
                 // if data is different from null, we put it into loader

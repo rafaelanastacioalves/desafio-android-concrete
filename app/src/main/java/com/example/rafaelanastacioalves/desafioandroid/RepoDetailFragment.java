@@ -124,7 +124,8 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             if (data != null){
                 mPullsListAdapter.setItems(data);
             }else{
-                showEmptyList();
+                mPullsListAdapter.setItems(null);
+//                showEmptyList();
             }
         }
     }
