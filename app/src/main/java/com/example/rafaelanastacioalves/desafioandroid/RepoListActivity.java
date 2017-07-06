@@ -138,8 +138,19 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         if (loader instanceof ReposAsyncTaskLoader) {
             int current_page = ((ReposAsyncTaskLoader) loader).getPage();
             mEndlessRecyclerOnScrollListener.setCurrentPage(current_page);
-            mRepoListAdapter.setItems(data);
 
+            if (data == null ){
+                if (current_page > 1){
+                    // we don't put anything into adapter
+
+                }else{
+                    // if we're first time loading data
+                    showEmptyList();
+                }
+            }else{
+                // if data is different from null, we put it into loader
+                mRepoListAdapter.setItems(data);
+            }
         }
 
 
@@ -180,74 +191,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     }
 
 
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
-            mValues = items;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.repo_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(RepoDetailFragment.ARG_CREATOR, holder.mItem.id);
-                        RepoDetailFragment fragment = new RepoDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.repo_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, RepoDetailActivity.class);
-                        intent.putExtra(RepoDetailFragment.ARG_CREATOR, holder.mItem.id);
-
-                        context.startActivity(intent);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
-            }
-        }
-    }
 
     private static class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
         private static List<Repo> mRepoList;
@@ -302,15 +246,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             super.onStartLoading();
         }
 
-        @Override
-        protected void onStopLoading() {
-            super.onStopLoading();
-            Timber.i("onStopLoading");
-            // if we were loading more, we now set status as false (not loading more)
-            if (LOAD_MORE.get()){
-                LOAD_MORE.set(false);
-            }
-        }
+
 
         @Override
         public List<Repo> loadInBackground() {
@@ -338,6 +274,16 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             }
 
             return mRepoList;
+        }
+
+        @Override
+        protected void onStopLoading() {
+            super.onStopLoading();
+            Timber.i("onStopLoading");
+            // if we were loading more, we now set status as false (not loading more)
+            if (LOAD_MORE.get()){
+                LOAD_MORE.set(false);
+            }
         }
     }
 }

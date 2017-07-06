@@ -121,7 +121,11 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onLoadFinished(Loader<List<Pull>> loader, List<Pull> data) {
         if (loader instanceof PullListAsyncTaskLoader) {
-            mPullsListAdapter.setItems(data);
+            if (data != null){
+                mPullsListAdapter.setItems(data);
+            }else{
+                showEmptyList();
+            }
         }
     }
 

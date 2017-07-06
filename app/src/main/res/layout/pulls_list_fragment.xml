@@ -14,4 +14,11 @@
         android:scrollbars="vertical"
         tools:listitem="@layout/pull_viewholder"
         />
+    <TextView
+        android:id="@+id/empty_list_textview"
+        android:text="@string/no_pull_requests"
+        style="@style/AppTheme"
+        android:layout_margin="@dimen/default_material_screen_edge_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
