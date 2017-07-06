@@ -143,6 +143,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     private static class PullListAsyncTaskLoader extends AsyncTaskLoader<List<Pull>> {
         private List<Pull> mPullList;
 
+        private static long mExpirationTimeLong = 1000 * 30; // in milliseconds
         private static String mRepository;
         private static String mCreator;
         private String mPersistenceKey;
@@ -168,7 +169,11 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             // we reset every time we start loading. Caching logic decisions later..
             mPullList = Hawk.get(mPersistenceKey);
             mLastUpdate = Hawk.get(mLastUpdatedForPullRequestKey);
-            if (mPullList == null){
+
+            long timeElapsed = Utils.getTimeDeltaUntilNowFrom(mLastUpdate);
+
+            // if we don't have any list or if we passed the expiration time
+            if (mPullList == null || timeElapsed > mExpirationTimeLong){
                 forceLoad();
             }else {
                 Timber.i("we already have the result!");
@@ -176,6 +181,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             }
             super.onStartLoading();
         }
+
 
         @Override
         public List<Pull> loadInBackground() {
@@ -190,6 +196,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
                     ArrayList<Pull> pulls = response.body();
                     mPullList = pulls;
                     Hawk.put(mPersistenceKey, mPullList);
+                    Hawk.put(mLastUpdatedForPullRequestKey, new Date());
                     return mPullList;
                 } else {
                     Timber.e(response.message(), null);
