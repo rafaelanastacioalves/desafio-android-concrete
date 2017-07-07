@@ -9,8 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="fill_parent"
-    android:layout_marginTop="@dimen/default_material_screen_edge_margin"
-    android:layout_marginBottom="@dimen/default_material_screen_edge_margin"
+    android:padding="@dimen/default_material_screen_edge_margin"
     android:layout_height="wrap_content">
 
     <LinearLayout
