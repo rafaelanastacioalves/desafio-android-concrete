@@ -49,24 +49,13 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     public static final String ARG_REPOSITORY = "repository_arg";
     private static final int PULL_LIST_LOADER = 11;
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    String mCreatorString;
-    public static final String CREATOR_KEY_LOADER = "creator_key_loader";
+    private static final String CREATOR_KEY_LOADER = "creator_key_loader";
 
-    String mRepositoryString;
-    public static final String REPOSITORY_KEY_LOADER = "repository_key_loader";
-
-
-    private LoaderManager.LoaderCallbacks<List<Pull>> callback = RepoDetailFragment.this;
-    PullsListAdapter mPullsListAdapter;
-
-
+    private static final String REPOSITORY_KEY_LOADER = "repository_key_loader";
+    private final RecyclerViewClickListener clickListener = this;
     @BindView(R.id.pulls_list_recycler_view)
     RecyclerView mPullsListRecyclerView;
-
-    private RecyclerViewClickListener clickListener = this;
+    private PullsListAdapter mPullsListAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -79,11 +68,8 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Load the dummy content specified by the fragment
-        // arguments. In a real-world scenario, use a Loader
-        // to load content from a content provider.
-        mCreatorString = getArguments().getString(ARG_CREATOR);
-        mRepositoryString = getArguments().getString(ARG_REPOSITORY);
+        String mCreatorString = getArguments().getString(ARG_CREATOR);
+        String mRepositoryString = getArguments().getString(ARG_REPOSITORY);
 
         Bundle bundle = new Bundle();
         bundle.putString(CREATOR_KEY_LOADER, mCreatorString);
@@ -124,9 +110,9 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onLoadFinished(Loader<List<Pull>> loader, List<Pull> data) {
         if (loader instanceof PullListAsyncTaskLoader) {
-            if (data != null){
+            if (data != null) {
                 mPullsListAdapter.setItems(data);
-            }else{
+            } else {
                 mPullsListAdapter.setItems(null);
 //                showEmptyList();
             }
@@ -149,22 +135,21 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
     private static class PullListAsyncTaskLoader extends AsyncTaskLoader<List<Pull>> {
-        private List<Pull> mPullList;
-
-        private static long mExpirationTimeLong = 1000 * 30; // in milliseconds
+        private static final long mExpirationTimeLong = 1000 * 30; // in milliseconds
         private static String mRepository;
         private static String mCreator;
-        private String mPersistenceKey;
+        private final String mPersistenceKey;
+        private final String mLastUpdatedForPullRequestKey;
+        private List<Pull> mPullList;
         private Date mLastUpdate;
-        private String mLastUpdatedForPullRequestKey;
 
 
         public PullListAsyncTaskLoader(Context context, String repository, String creator) {
             super(context);
             mRepository = repository;
             mCreator = creator;
-            mPersistenceKey = mCreator+"-"+mRepository;
-            mLastUpdatedForPullRequestKey = mCreator+"-"+mRepository+"-"+"mLastUpdate";
+            mPersistenceKey = mCreator + "-" + mRepository;
+            mLastUpdatedForPullRequestKey = mCreator + "-" + mRepository + "-" + "mLastUpdate";
 
         }
 
@@ -181,9 +166,9 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             long timeElapsed = Utils.getTimeDeltaUntilNowFrom(mLastUpdate);
 
             // if we don't have any list or if we passed the expiration time
-            if (mPullList == null || timeElapsed > mExpirationTimeLong){
+            if (mPullList == null || timeElapsed > mExpirationTimeLong) {
                 forceLoad();
-            }else {
+            } else {
                 Timber.i("we already have the result!");
                 deliverResult(mPullList);
             }
@@ -201,16 +186,17 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
 
                 if (response.isSuccessful()) {
                     Timber.i("response Successful");
-                    ArrayList<Pull> pulls = response.body();
-                    mPullList = pulls;
+                    mPullList = response.body();
                     Hawk.put(mPersistenceKey, mPullList);
                     Hawk.put(mLastUpdatedForPullRequestKey, new Date());
                     return mPullList;
                 } else {
-                    Timber.e(response.message(), null);
+                    //TODO add more error management
+                    Timber.e(response.message());
                 }
 
             } catch (IOException e) {
+                //TODO add more error management
                 e.printStackTrace();
             }
 

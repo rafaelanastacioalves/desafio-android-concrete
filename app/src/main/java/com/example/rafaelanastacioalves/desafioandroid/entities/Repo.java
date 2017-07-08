@@ -3,6 +3,7 @@ package com.example.rafaelanastacioalves.desafioandroid.entities;
 /**
  * Created by rafaelanastacioalves on 28/09/2015.
  */
+@SuppressWarnings({"unused", "DefaultFileTemplate"})
 public class Repo {
 
     private String name;
@@ -16,13 +17,10 @@ public class Repo {
     private RepoOwner owner;
 
     private String pullsUrl;
+    @SuppressWarnings("FieldCanBeLocal")
     private String pictureFile;
 
     public Repo() {
-    }
-
-    public Repo(String text) {
-        this.name = text;
     }
 
 
@@ -34,9 +32,6 @@ public class Repo {
         return description;
     }
 
-    public void setText(String text) {
-        this.name = text;
-    }
 
     public int getForks() {
         return forks;
@@ -50,8 +45,5 @@ public class Repo {
         return stargazers_count;
     }
 
-    public void setPictureFile(String picture) {
-        this.pictureFile = picture;
-    }
 }
 

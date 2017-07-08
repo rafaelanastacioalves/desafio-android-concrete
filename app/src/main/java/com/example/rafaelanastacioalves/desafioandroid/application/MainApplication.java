@@ -14,7 +14,8 @@ import timber.log.Timber;
  */
 
 public class MainApplication extends Application {
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
@@ -30,7 +31,9 @@ public class MainApplication extends Application {
         Hawk.init(this).build();
     }
 
-    /** A tree which logs important information for crash reporting. */
+    /**
+     * A tree which logs important information for crash reporting.
+     */
     private static class CrashReportingTree extends Timber.Tree {
         @Override
         protected void log(int priority, String tag, String message, Throwable t) {

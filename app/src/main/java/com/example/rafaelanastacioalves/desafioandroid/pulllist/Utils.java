@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by rafaelanastacioalves on 05/07/17.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 class Utils {
 
     public static long getTimeDeltaUntilNowFrom(Date mLastUpdate) {
@@ -14,7 +15,7 @@ class Utils {
             long timeNow = Calendar.getInstance().getTimeInMillis();
             long timeLastUpdate = mLastUpdate.getTime();
             return timeNow - timeLastUpdate;
-        }else {
+        } else {
             return 0;
         }
     }

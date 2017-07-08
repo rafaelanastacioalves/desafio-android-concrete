@@ -19,11 +19,14 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by rafaelanastacioalves on 10/03/16.
  */
-public class PullsListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHolder, Pull, RecyclerViewClickListener> {
+@SuppressWarnings("DefaultFileTemplate")
+class PullsListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHolder, Pull, RecyclerViewClickListener> {
     private final Context mContext;
     private RecyclerViewClickListener recyclerViewClickListener;
 
-    public PullsListAdapter(Context context) { mContext = context; }
+    public PullsListAdapter(Context context) {
+        mContext = context;
+    }
 
     @Override
     protected RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup viewGroup, int viewType) {
@@ -35,7 +38,7 @@ public class PullsListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewH
     @Override
     protected void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         Pull aPull = getItems().get(position);
-        ((PullViewHolder) holder).bind(aPull,mContext);
+        ((PullViewHolder) holder).bind(aPull, mContext);
     }
 
     public void setRecyclerViewClickListener(RecyclerViewClickListener aRVC) {
@@ -47,21 +50,21 @@ public class PullsListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewH
 
 
 class PullViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    TextView pullTextViewDescription;
-    TextView pullTextViewTitle;
-    TextView pullTexViewtUserName;
-    RecyclerViewClickListener aRecyclerViewListener;
+    private final TextView pullTextViewDescription;
+    private final TextView pullTextViewTitle;
+    private final TextView pullTexViewUserName;
+    private final RecyclerViewClickListener aRecyclerViewListener;
 
-    LinearLayout pullLinearLayoutContainer;
+    private final LinearLayout pullLinearLayoutContainer;
 
-    CircularImageView circularImageView;
+    private final CircularImageView circularImageView;
 
     public PullViewHolder(View itemView, RecyclerViewClickListener clickListener) {
         super(itemView);
         this.aRecyclerViewListener = clickListener;
         pullTextViewDescription = (TextView) itemView.findViewById(R.id.pull_text_view_description);
         pullTextViewTitle = (TextView) itemView.findViewById(R.id.pull_textview_title);
-        pullTexViewtUserName = (TextView) itemView.findViewById(R.id.pull_textview_owner_username);
+        pullTexViewUserName = (TextView) itemView.findViewById(R.id.pull_textview_owner_username);
         pullLinearLayoutContainer = (LinearLayout) itemView.findViewById(R.id.pull_linear_layout_container);
 
         circularImageView = (CircularImageView) itemView.findViewById(R.id.repo_textview_owner_photo);
@@ -74,8 +77,8 @@ class PullViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         pullLinearLayoutContainer.setContentDescription("Pull Request number " + (getAdapterPosition() + 1));
 
         pullTextViewTitle.setText(aPull.getTitle());
-        pullTexViewtUserName.setText(aPull.getPullUser().getLogin());
-        pullTexViewtUserName.setHint(aPull.getPullUser().getLogin()+getAdapterPosition());
+        pullTexViewUserName.setText(aPull.getPullUser().getLogin());
+        pullTexViewUserName.setHint(aPull.getPullUser().getLogin() + getAdapterPosition());
 
 
         Picasso.with(context)

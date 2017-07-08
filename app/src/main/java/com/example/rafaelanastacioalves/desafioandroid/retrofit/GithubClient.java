@@ -36,6 +36,4 @@ public interface GithubClient {
 //    void getPulls(@Path("creator") String creator, @Path("repository") String repository, Callback<ArrayList<Pull>> response);
 
 
-
-
 }

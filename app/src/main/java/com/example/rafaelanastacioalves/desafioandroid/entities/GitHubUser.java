@@ -8,10 +8,10 @@ import java.io.Serializable;
  * Created by rafaelanastacioalves on 4/16/16.
  */
 
-public class GitHubUser implements Serializable {
+@SuppressWarnings({"CanBeFinal", "unused"})
+class GitHubUser implements Serializable {
     @SerializedName("login")
     private String login;
-
 
 
     @SerializedName("id")
@@ -27,21 +27,9 @@ public class GitHubUser implements Serializable {
         return login;
     }
 
-
-    public String getPictureStringData() {
-        return pictureStringData;
-    }
-
-    public void setPictureStringData(String pictureStringData) {
-        this.pictureStringData = pictureStringData;
-    }
-
     public String getAvatarUrl() {
         return avatarUrl;
     }
 
 
-    public int getId() {
-        return id;
-    }
 }

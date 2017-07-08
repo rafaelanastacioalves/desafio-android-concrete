@@ -14,10 +14,10 @@ import android.view.View;
 import com.example.rafaelanastacioalves.desafioandroid.R;
 import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewListAdapter;
-import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailActivity;
-import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailFragment;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.example.rafaelanastacioalves.desafioandroid.listeners.EndlessRecyclerOnScrollListener;
+import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailActivity;
+import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailFragment;
 
 import java.util.List;
 
@@ -36,19 +36,17 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private static final int REPOS_LOADER_ID = 1;
     private static final String PAGE_KEY = "PAGE_KEY";
     private static final String LOAD_MORE_KEY = "LOAD_MORE_KEY";
-
+    private final LoaderManager.LoaderCallbacks<List<Repo>> mCallback = RepoListActivity.this;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int repoListLoaderId = 10;
+    private final RecyclerViewClickListener mClickListener = this;
+    protected RepoListAdapter mRepoListAdapter;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-    private final LoaderManager.LoaderCallbacks<List<Repo>> mCallback = RepoListActivity.this;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int repoListLoaderId = 10;
-    protected RepoListAdapter mRepoListAdapter;
     private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
-    private final RecyclerViewClickListener mClickListener = this;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,18 +126,18 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             int current_page = ((ReposAsyncTaskLoader) loader).getPage();
             mEndlessRecyclerOnScrollListener.setCurrentPage(current_page);
 
-            if (data == null ){
+            if (data == null) {
                 //noinspection StatementWithEmptyBody
-                if (current_page > 1){
+                if (current_page > 1) {
                     // we don't put anything into adapter
                     //TODO add any error managing for pagination loading
 
 
-                }else{
+                } else {
                     // if we're first time loading data
                     mRepoListAdapter.setItems(null);
                 }
-            }else{
+            } else {
                 // if data is different from null, we put it into loader
                 mRepoListAdapter.setItems(data);
             }
@@ -169,9 +167,9 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                     .replace(R.id.repo_detail_container, fragment)
                     .commit();
         } else {
-            Intent i = new Intent(this,RepoDetailActivity.class);
-            i.putExtra(RepoDetailFragment.ARG_CREATOR, repo.getOwner().getLogin() );
-            i.putExtra(RepoDetailFragment.ARG_REPOSITORY, repo.getName() );
+            Intent i = new Intent(this, RepoDetailActivity.class);
+            i.putExtra(RepoDetailFragment.ARG_CREATOR, repo.getOwner().getLogin());
+            i.putExtra(RepoDetailFragment.ARG_REPOSITORY, repo.getName());
             startActivity(i);
         }
 

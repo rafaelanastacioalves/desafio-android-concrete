@@ -39,11 +39,11 @@ public abstract class RecyclerViewListAdapter<V, R, R1> extends RecyclerView.Ada
     }
 
     public void setItems(List<R> items) {
-        if (items !=null){
-            for(int i=0; i<items.size(); i++){
+        if (items != null) {
+            for (int i = 0; i < items.size(); i++) {
                 this.items.add(items.get(i));
             }
-        }else {
+        } else {
             this.items = null;
         }
 

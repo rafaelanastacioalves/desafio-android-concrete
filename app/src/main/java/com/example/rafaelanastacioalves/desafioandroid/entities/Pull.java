@@ -7,8 +7,8 @@ import java.io.Serializable;
 /**
  * Created by rafaelanastacioalves on 28/09/2015.
  */
+@SuppressWarnings({"DefaultFileTemplate", "unused"})
 public class Pull implements Serializable {
-
 
 
     @SerializedName("title")
@@ -26,8 +26,6 @@ public class Pull implements Serializable {
 
     public Pull() {
     }
-
-
 
 
     public String getTitle() {
