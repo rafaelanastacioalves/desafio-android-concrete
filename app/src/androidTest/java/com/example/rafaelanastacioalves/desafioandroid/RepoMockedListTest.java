@@ -9,6 +9,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.example.rafaelanastacioalves.desafioandroid.constants.Constants;
+import com.example.rafaelanastacioalves.desafioandroid.repolist.RepoListActivity;
 
 import org.junit.After;
 import org.junit.Before;

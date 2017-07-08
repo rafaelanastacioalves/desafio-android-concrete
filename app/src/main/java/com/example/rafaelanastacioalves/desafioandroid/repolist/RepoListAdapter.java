@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid;
+package com.example.rafaelanastacioalves.desafioandroid.repolist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.rafaelanastacioalves.desafioandroid.R;
+import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
+import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewListAdapter;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
@@ -16,7 +19,7 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by rafaelanastacioalves on 24/05/17.
  */
-public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHolder,Repo,RecyclerViewClickListener>{
+public class RepoListAdapter extends RecyclerViewListAdapter<RecyclerView.ViewHolder,Repo,RecyclerViewClickListener> {
     private RecyclerViewClickListener recyclerViewClickListener;
     private Context mContext;
 

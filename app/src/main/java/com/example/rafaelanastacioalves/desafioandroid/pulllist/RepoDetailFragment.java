@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid;
+package com.example.rafaelanastacioalves.desafioandroid.pulllist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.rafaelanastacioalves.desafioandroid.R;
+import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Pull;
+import com.example.rafaelanastacioalves.desafioandroid.repolist.RepoListActivity;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.GithubClient;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator;
 import com.orhanobut.hawk.Hawk;
