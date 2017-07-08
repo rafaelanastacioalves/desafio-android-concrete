@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
  */
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
     @SuppressWarnings("FieldCanBeLocal")
-    private final int visibleThreshold = 5;
+    private final int visibleThreshold = 8;
     private final LinearLayoutManager mLinearLayoutManager;
     private int previousTotal = 0;
     private boolean loading = true;
