@@ -129,8 +129,8 @@ public class RepoMockedListTest {
 
         mRepoListTestRule.launchActivity(intent);
 
-        if (mRepoListTestRule.getActivity().mRepoListAdapter == null ||
-                mRepoListTestRule.getActivity().mRepoListAdapter.getItems().isEmpty()){
+        if (mRepoListTestRule.getActivity().getAdapter() == null ||
+                mRepoListTestRule.getActivity().getAdapter().getItems().isEmpty()){
             Timber.i("list empty");
                 initialListEmpty = true;
                 server.enqueue(new MockResponse()

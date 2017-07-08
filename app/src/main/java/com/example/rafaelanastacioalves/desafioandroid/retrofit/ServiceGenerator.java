@@ -76,36 +76,6 @@ public class ServiceGenerator {
         return retrofit.create(serviceClass);
     }
 
-    public static <S> S createService(Class<S> serviceClass, final AccessToken token) {
-        if (token != null) {
-            httpClient.addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Interceptor.Chain chain) throws IOException {
-                    Request original = chain.request();
-
-                    Request.Builder requestBuilder = original.newBuilder()
-                            .header("Accept", "application/json")
-                            .header("Authorization",
-                                    token.getTokenType() + " " + token.getAccessToken())
-                            .method(original.method(), original.body());
-
-                    Request request = requestBuilder.build();
-                    return chain.proceed(request);
-                }
-            });
-        }
-
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-        OkHttpClient client = httpClient
-                .addInterceptor(interceptor)
-                .build();
-
-        Retrofit retrofit = builder.client(client)
-                .build();
-        return retrofit.create(serviceClass);
-    }
-
 
 
 }

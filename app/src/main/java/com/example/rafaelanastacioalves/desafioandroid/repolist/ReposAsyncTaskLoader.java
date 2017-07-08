@@ -45,7 +45,7 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
     public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore) {
         super(context);
         Timber.i("new AsyncTaskLoader + loadingMore: " + isLoadingMore);
-        this.page = page;
+        ReposAsyncTaskLoader.page = page;
         LOAD_MORE.set(isLoadingMore);
     }
 

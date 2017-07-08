@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
 import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
+import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewListAdapter;
 import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailActivity;
 import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailFragment;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
@@ -44,7 +45,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private final LoaderManager.LoaderCallbacks<List<Repo>> mCallback = RepoListActivity.this;
     @SuppressWarnings("FieldCanBeLocal")
     private final int repoListLoaderId = 10;
-    RepoListAdapter mRepoListAdapter;
+    protected RepoListAdapter mRepoListAdapter;
     private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
     private final RecyclerViewClickListener mClickListener = this;
 
@@ -178,4 +179,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     }
 
 
+    public RecyclerViewListAdapter getAdapter() {
+        return mRepoListAdapter;
+    }
 }
