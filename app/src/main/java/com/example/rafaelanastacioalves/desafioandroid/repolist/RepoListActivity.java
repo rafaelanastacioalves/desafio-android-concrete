@@ -148,9 +148,8 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public void onLoaderReset(Loader<List<Repo>> loader) {
-        Timber.i("onLoaderReset");
-        mRepoListAdapter.setItems(null);
-
+        //Timber.i("onLoaderReset");
+        // We do nothing here, as we don't want invalidate our data
     }
 
     @Override

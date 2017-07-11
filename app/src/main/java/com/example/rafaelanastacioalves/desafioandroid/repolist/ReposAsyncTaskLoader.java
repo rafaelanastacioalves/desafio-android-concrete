@@ -9,6 +9,7 @@ import com.example.rafaelanastacioalves.desafioandroid.retrofit.GithubClient;
 import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -87,7 +88,11 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
             if (response.isSuccessful()) {
                 Timber.i("response Successful");
                 Repos repos = response.body();
-                mRepoList = repos.getRepoList();
+                if(mRepoList == null){
+                    mRepoList = new ArrayList<Repo>(repos.getRepoList());
+                }else{
+                    mRepoList.addAll(repos.getRepoList());
+                }
                 return mRepoList;
             } else {
                 Timber.e(response.message());

@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 
 public abstract class RecyclerViewListAdapter<V, R, R1> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<R> items = new ArrayList<>();
@@ -38,15 +40,33 @@ public abstract class RecyclerViewListAdapter<V, R, R1> extends RecyclerView.Ada
         return items;
     }
 
-    public void setItems(List<R> items) {
+    public void addItems(List<R> items) {
         if (items != null) {
             for (int i = 0; i < items.size(); i++) {
                 this.items.add(items.get(i));
             }
-        } else {
-            this.items = null;
         }
 
+        notifyDataSetChanged();
+    }
+
+    public void setItems(List<R> items){
+        if (!this.items.equals(items)){
+            // the lists are different!
+            this.items = items;
+            notifyDataSetChanged();
+
+        }else {
+            // the lists are the same!
+            Timber.i("The lists are the same! Nothing to change");
+
+        }
+
+
+    }
+
+    public void resetItems(){
+        this.items = null;
         notifyDataSetChanged();
     }
 
