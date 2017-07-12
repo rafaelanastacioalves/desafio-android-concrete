@@ -69,7 +69,6 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
             deliverResult(mRepoList);
         }
 
-        super.onStartLoading();
     }
 
 

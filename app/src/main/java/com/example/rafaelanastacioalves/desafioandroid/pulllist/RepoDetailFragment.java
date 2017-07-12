@@ -171,7 +171,6 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
                 Timber.i("we already have the result!");
                 deliverResult(mPullList);
             }
-            super.onStartLoading();
         }
 
 
