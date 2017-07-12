@@ -47,6 +47,8 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
      */
     private boolean mTwoPane;
     private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
+    private static int lastFirstVisiblePosition;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         toolbar.setTitle(getTitle());
 
 
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.repo_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.repo_list);
         setupRecyclerView(mRecyclerView);
 
         if (findViewById(R.id.repo_detail_container) != null) {
@@ -72,7 +74,18 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             mTwoPane = true;
         }
 
-        getSupportLoaderManager().initLoader(repoListLoaderId, null, mCallback);
+        if (getSupportLoaderManager().getLoader(repoListLoaderId) == null){
+            getSupportLoaderManager().initLoader(repoListLoaderId, null, mCallback);
+        }else{
+            getSupportLoaderManager().restartLoader(repoListLoaderId,null,mCallback);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lastFirstVisiblePosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -116,6 +129,13 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             return new ReposAsyncTaskLoader(this);
         }
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPosition(lastFirstVisiblePosition);
 
     }
 
