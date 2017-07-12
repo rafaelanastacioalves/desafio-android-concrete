@@ -5,5 +5,6 @@ package com.example.rafaelanastacioalves.desafioandroid.constants;
  */
 
 public final class Constants {
+    //TODO separate for different buildTypes
     public static String API_BASE_URL = "https://api.github.com";
 }

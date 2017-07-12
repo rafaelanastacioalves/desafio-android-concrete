@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
 import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
-import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewListAdapter;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.example.rafaelanastacioalves.desafioandroid.listeners.EndlessRecyclerOnScrollListener;
 import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailActivity;
@@ -196,7 +195,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     }
 
 
-    public RecyclerViewListAdapter getAdapter() {
+    public RepoListAdapter getAdapter() {
         return mRepoListAdapter;
     }
 }

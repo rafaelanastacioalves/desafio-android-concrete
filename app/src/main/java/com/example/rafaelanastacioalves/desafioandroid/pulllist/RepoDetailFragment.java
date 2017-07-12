@@ -1,13 +1,11 @@
 package com.example.rafaelanastacioalves.desafioandroid.pulllist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,19 +17,11 @@ import com.example.rafaelanastacioalves.desafioandroid.R;
 import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Pull;
 import com.example.rafaelanastacioalves.desafioandroid.repolist.RepoListActivity;
-import com.example.rafaelanastacioalves.desafioandroid.retrofit.GithubClient;
-import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator;
-import com.orhanobut.hawk.Hawk;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -133,72 +123,4 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         startActivity(browserIntent);
     }
 
-    private static class PullListAsyncTaskLoader extends AsyncTaskLoader<List<Pull>> {
-        private static final long mExpirationTimeLong = 1000 * 30; // in milliseconds
-        private static String mRepository;
-        private static String mCreator;
-        private final String mPersistenceKey;
-        private final String mLastUpdatedForPullRequestKey;
-        private List<Pull> mPullList;
-        private Date mLastUpdate;
-
-
-        public PullListAsyncTaskLoader(Context context, String repository, String creator) {
-            super(context);
-            mRepository = repository;
-            mCreator = creator;
-            mPersistenceKey = mCreator + "-" + mRepository;
-            mLastUpdatedForPullRequestKey = mCreator + "-" + mRepository + "-" + "mLastUpdate";
-
-        }
-
-
-        @Override
-        protected void onStartLoading() {
-
-            Timber.i("onStartLoading");
-
-            // we reset every time we start loading. Caching logic decisions later..
-            mPullList = Hawk.get(mPersistenceKey);
-            mLastUpdate = Hawk.get(mLastUpdatedForPullRequestKey);
-
-            long timeElapsed = Utils.getTimeDeltaUntilNowFrom(mLastUpdate);
-
-            // if we don't have any list or if we passed the expiration time
-            if (mPullList == null || timeElapsed > mExpirationTimeLong) {
-                forceLoad();
-            } else {
-                Timber.i("we already have the result!");
-                deliverResult(mPullList);
-            }
-        }
-
-
-        @Override
-        public List<Pull> loadInBackground() {
-            GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
-            Call<ArrayList<Pull>> call = githubClient.getPulls(mCreator, mRepository);
-
-            try {
-                Response<ArrayList<Pull>> response = call.execute();
-
-                if (response.isSuccessful()) {
-                    Timber.i("response Successful");
-                    mPullList = response.body();
-                    Hawk.put(mPersistenceKey, mPullList);
-                    Hawk.put(mLastUpdatedForPullRequestKey, new Date());
-                    return mPullList;
-                } else {
-                    //TODO add more error management
-                    Timber.e(response.message());
-                }
-
-            } catch (IOException e) {
-                //TODO add more error management
-                e.printStackTrace();
-            }
-
-            return mPullList;
-        }
-    }
 }

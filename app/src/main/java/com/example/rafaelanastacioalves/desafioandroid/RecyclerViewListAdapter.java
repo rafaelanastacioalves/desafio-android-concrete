@@ -47,13 +47,13 @@ public abstract class RecyclerViewListAdapter<V, R, R1> extends RecyclerView.Ada
 
         notifyDataSetChanged();
     }
-
     public void setItems(List<R> items){
-      this.items = items;
+        this.items = items;
         notifyDataSetChanged();
 
 
     }
+
 
     public void resetItems(){
         this.items = null;
