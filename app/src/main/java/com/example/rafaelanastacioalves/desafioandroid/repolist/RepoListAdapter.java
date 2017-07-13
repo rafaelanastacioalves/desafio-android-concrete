@@ -27,6 +27,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
     }
 
 
+
     public void setRecyclerViewClickListener(RecyclerViewClickListener aRVC) {
         this.recyclerViewClickListener = aRVC;
     }
