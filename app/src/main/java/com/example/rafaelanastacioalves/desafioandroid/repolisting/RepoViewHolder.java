@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.repolist;
+package com.example.rafaelanastacioalves.desafioandroid.repolisting;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
-import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
+import com.example.rafaelanastacioalves.desafioandroid.listeners.RecyclerViewClickListener;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 

@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.repolist;
+package com.example.rafaelanastacioalves.desafioandroid.repolisting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
-import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.example.rafaelanastacioalves.desafioandroid.listeners.EndlessRecyclerOnScrollListener;
-import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailActivity;
-import com.example.rafaelanastacioalves.desafioandroid.pulllist.RepoDetailFragment;
+import com.example.rafaelanastacioalves.desafioandroid.listeners.RecyclerViewClickListener;
+import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailActivity;
+import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailFragment;
 
 import java.util.List;
 
@@ -35,6 +35,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
     private static final int REPOS_LOADER_ID = 1;
     private static final String PAGE_KEY = "PAGE_KEY";
     private static final String LOAD_MORE_KEY = "LOAD_MORE_KEY";
+    private static int lastFirstVisiblePosition;
     private final LoaderManager.LoaderCallbacks<List<Repo>> mCallback = RepoListActivity.this;
     @SuppressWarnings("FieldCanBeLocal")
     private final int repoListLoaderId = 10;
@@ -46,7 +47,6 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
      */
     private boolean mTwoPane;
     private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
-    private static int lastFirstVisiblePosition;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -73,17 +73,17 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
             mTwoPane = true;
         }
 
-        if (getSupportLoaderManager().getLoader(repoListLoaderId) == null){
+        if (getSupportLoaderManager().getLoader(repoListLoaderId) == null) {
             getSupportLoaderManager().initLoader(repoListLoaderId, null, mCallback);
-        }else{
-            getSupportLoaderManager().restartLoader(repoListLoaderId,null,mCallback);
+        } else {
+            getSupportLoaderManager().restartLoader(repoListLoaderId, null, mCallback);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        lastFirstVisiblePosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        lastFirstVisiblePosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
 
     }
 

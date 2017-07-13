@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.repolist;
+package com.example.rafaelanastacioalves.desafioandroid.repolisting;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
@@ -87,9 +87,9 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
             if (response.isSuccessful()) {
                 Timber.i("response Successful");
                 Repos repos = response.body();
-                if(mRepoList == null){
+                if (mRepoList == null) {
                     mRepoList = new ArrayList<Repo>(repos.getRepoList());
-                }else{
+                } else {
                     mRepoList.addAll(repos.getRepoList());
                 }
                 return mRepoList;

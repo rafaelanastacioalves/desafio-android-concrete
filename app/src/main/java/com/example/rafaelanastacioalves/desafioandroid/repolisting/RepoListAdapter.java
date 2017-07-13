@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.repolist;
+package com.example.rafaelanastacioalves.desafioandroid.repolisting;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
-import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
+import com.example.rafaelanastacioalves.desafioandroid.listeners.RecyclerViewClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,6 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
     }
 
 
-
     public void setRecyclerViewClickListener(RecyclerViewClickListener aRVC) {
         this.recyclerViewClickListener = aRVC;
     }
@@ -36,7 +35,12 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
         return this.items;
     }
 
+    public void setItems(List<Repo> items) {
+        this.items = items;
+        notifyDataSetChanged();
 
+
+    }
 
     @Override
     public RepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,14 +52,6 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
     public void onBindViewHolder(RepoViewHolder holder, int position) {
         Repo aRepoW = getItems().get(position);
         ((RepoViewHolder) holder).bind(aRepoW, mContext);
-    }
-
-
-    public void setItems(List<Repo> items){
-        this.items = items;
-        notifyDataSetChanged();
-
-
     }
 
     @Override

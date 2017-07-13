@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.pulllist;
+package com.example.rafaelanastacioalves.desafioandroid.pulllisting;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
-import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Pull;
+import com.example.rafaelanastacioalves.desafioandroid.listeners.RecyclerViewClickListener;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -33,19 +33,24 @@ class PullsListAdapter extends RecyclerView.Adapter<PullViewHolder> {
         mContext = context;
     }
 
-    private List<Pull>  getItems() {
+    private List<Pull> getItems() {
         return this.items;
+    }
+
+    public void setItems(List<Pull> data) {
+        this.items = data;
+        notifyDataSetChanged();
     }
 
     public void setRecyclerViewClickListener(RecyclerViewClickListener aRVC) {
         this.recyclerViewClickListener = aRVC;
     }
 
-
     @Override
     public PullViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new PullViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.pull_viewholder, parent, false), recyclerViewClickListener);    }
+                .inflate(R.layout.pull_viewholder, parent, false), recyclerViewClickListener);
+    }
 
     @Override
     public void onBindViewHolder(PullViewHolder holder, int position) {
@@ -53,15 +58,9 @@ class PullsListAdapter extends RecyclerView.Adapter<PullViewHolder> {
         (holder).bind(aPull, mContext);
     }
 
-
     @Override
     public int getItemCount() {
         return this.items.size();
-    }
-
-    public void setItems(List<Pull> data) {
-        this.items = data;
-        notifyDataSetChanged();
     }
 }
 

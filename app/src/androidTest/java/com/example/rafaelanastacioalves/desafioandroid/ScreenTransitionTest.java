@@ -3,7 +3,7 @@ package com.example.rafaelanastacioalves.desafioandroid;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.rafaelanastacioalves.desafioandroid.repolist.RepoListActivity;
+import com.example.rafaelanastacioalves.desafioandroid.repolisting.RepoListActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

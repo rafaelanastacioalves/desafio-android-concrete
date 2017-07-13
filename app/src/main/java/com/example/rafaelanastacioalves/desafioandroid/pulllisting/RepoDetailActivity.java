@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.pulllist;
+package com.example.rafaelanastacioalves.desafioandroid.pulllisting;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
-import com.example.rafaelanastacioalves.desafioandroid.repolist.RepoListActivity;
+import com.example.rafaelanastacioalves.desafioandroid.repolisting.RepoListActivity;
 
 import butterknife.ButterKnife;
 import timber.log.Timber;

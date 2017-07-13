@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.pulllist;
+package com.example.rafaelanastacioalves.desafioandroid.pulllisting;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -14,9 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.rafaelanastacioalves.desafioandroid.R;
-import com.example.rafaelanastacioalves.desafioandroid.RecyclerViewClickListener;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Pull;
-import com.example.rafaelanastacioalves.desafioandroid.repolist.RepoListActivity;
+import com.example.rafaelanastacioalves.desafioandroid.listeners.RecyclerViewClickListener;
+import com.example.rafaelanastacioalves.desafioandroid.repolisting.RepoListActivity;
 
 import java.util.List;
 

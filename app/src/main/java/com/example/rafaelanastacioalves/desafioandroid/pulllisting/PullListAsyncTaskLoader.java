@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.desafioandroid.pulllist;
+package com.example.rafaelanastacioalves.desafioandroid.pulllisting;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

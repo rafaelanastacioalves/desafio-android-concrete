@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.rafaelanastacioalves.desafioandroid.repolist.RepoViewHolder;
+import com.example.rafaelanastacioalves.desafioandroid.repolisting.RepoViewHolder;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
