@@ -8,7 +8,6 @@ import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.rafaelanastacioalves.desafioandroid.constants.Constants;
 import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailActivity;
 import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailFragment;
 
@@ -59,7 +58,7 @@ public class PullMockedListTest {
         server = new MockWebServer();
         server.start(1234);
         InstrumentationRegistry.registerInstance(InstrumentationRegistry.getInstrumentation(),new Bundle());
-        Constants.API_BASE_URL = server.url("/").toString();
+        server.url("/");
 
 //        intending(not(isInternal())).respondWith(new ActivityResult(Activity.RESULT_OK, null));
 

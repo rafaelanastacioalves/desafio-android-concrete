@@ -8,7 +8,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.rafaelanastacioalves.desafioandroid.constants.Constants;
 import com.example.rafaelanastacioalves.desafioandroid.repolisting.RepoListActivity;
 
 import org.junit.After;
@@ -59,7 +58,7 @@ public class RepoMockedListTest {
         server = new MockWebServer();
         server.start(1234);
         InstrumentationRegistry.registerInstance(InstrumentationRegistry.getInstrumentation(),new Bundle());
-        Constants.API_BASE_URL = server.url("/").toString();
+        server.url("/").toString();
 
 
     }

@@ -11,23 +11,27 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    testBuildType "apiLocal"
     buildTypes {
         debug {
-            buildConfigField "String", "API_BASE_URL", "\"https://api.github.com\""
+            buildConfigField "String", "API_BASE_URL", '"https://api.github.com"'
         }
         release {
             minifyEnabled false
-            buildConfigField "String", "API_BASE_URL", "\"https://api.github.com\""
+            buildConfigField "String", "API_BASE_URL", '"https://api.github.com"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        instrumented {
+        apiLocal {
+            initWith(buildTypes.debug)
             testCoverageEnabled = true
-            buildConfigField "String", "API_BASE_URL", "\"http://localhost.com\""
+            buildConfigField "String", "API_BASE_URL", '"http://localhost.com:1234"'
 
         }
     }
 
-    testBuildType "instrumented"
+
+
 }
 
 dependencies {

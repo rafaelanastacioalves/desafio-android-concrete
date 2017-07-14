@@ -1,6 +1,7 @@
 package com.example.rafaelanastacioalves.desafioandroid.retrofit;
 
-import com.example.rafaelanastacioalves.desafioandroid.constants.Constants;
+
+import com.example.rafaelanastacioalves.desafioandroid.BuildConfig;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -21,7 +22,7 @@ public class ServiceGenerator {
 
     private static final Retrofit.Builder builder =
             new Retrofit.Builder()
-                    .baseUrl(Constants.API_BASE_URL)
+                    .baseUrl(BuildConfig.API_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create());
 
 
