@@ -79,6 +79,14 @@ public class PullMockedListTest {
                 )
         );
 
+        server.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setBody(RestServiceTestHelper.getStringFromFile(
+                        InstrumentationRegistry.getInstrumentation().getContext()
+                        ,fileNamePullsListOKRespone)
+                )
+        );
+
         Intent intent = new Intent();
         intent.putExtra(RepoDetailFragment.ARG_CREATOR, "elastic");
         intent.putExtra(RepoDetailFragment.ARG_REPOSITORY, "elasticsearch");

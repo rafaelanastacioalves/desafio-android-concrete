@@ -13,19 +13,22 @@ android {
     }
 
     testBuildType "apiLocal"
+
     buildTypes {
+
+        buildTypes.each {
+            it.buildConfigField "String", "API_BASE_URL", 'https://api.github.com"'
+        }
         debug {
-            buildConfigField "String", "API_BASE_URL", '"https://api.github.com"'
         }
         release {
             minifyEnabled false
-            buildConfigField "String", "API_BASE_URL", '"https://api.github.com"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         apiLocal {
             initWith(buildTypes.debug)
             testCoverageEnabled = true
-            buildConfigField "String", "API_BASE_URL", '"http://localhost.com:1234"'
+            buildConfigField "String", "API_BASE_URL", '"http://localhost:1234"'
 
         }
     }
@@ -51,7 +54,6 @@ dependencies {
     androidTestCompile 'com.android.support:appcompat-v7:25.3.1'
     androidTestCompile 'com.android.support:support-v4:25.3.1'
     androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.8.0'
-
 
 
 
