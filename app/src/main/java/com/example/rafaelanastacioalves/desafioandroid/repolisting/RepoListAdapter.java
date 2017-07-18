@@ -56,7 +56,11 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoViewHolder> {
 
     @Override
     public int getItemCount() {
-        return getItems().size();
+        if (getItems() != null){
+            return getItems().size();
+        }else{
+            return 0;
+        }
     }
 }
 

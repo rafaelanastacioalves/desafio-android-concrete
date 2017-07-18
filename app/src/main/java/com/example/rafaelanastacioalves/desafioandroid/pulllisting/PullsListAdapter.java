@@ -60,7 +60,12 @@ class PullsListAdapter extends RecyclerView.Adapter<PullViewHolder> {
 
     @Override
     public int getItemCount() {
-        return this.items.size();
+        if (getItems() != null){
+            return this.items.size();
+
+        }else{
+            return 0;
+        }
     }
 }
 
