@@ -46,7 +46,6 @@ class PullListAsyncTaskLoader extends AsyncTaskLoader<List<Pull>> {
 
         Timber.i("onStartLoading");
 
-        // we reset every time we start loading. Caching logic decisions later..
         mPullList = Hawk.get(mPersistenceKey);
         Date mLastUpdate = Hawk.get(mLastUpdatedForPullRequestKey);
 
@@ -79,6 +78,10 @@ class PullListAsyncTaskLoader extends AsyncTaskLoader<List<Pull>> {
             } else {
                 //TODO add more error management
                 Timber.e(response.message());
+                // we try to show the last result
+                mPullList = Hawk.get(mPersistenceKey);
+                return mPullList;
+
             }
 
         } catch (IOException e) {
