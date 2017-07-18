@@ -17,7 +17,7 @@ android {
     buildTypes {
 
         buildTypes.each {
-            it.buildConfigField "String", "API_BASE_URL", 'https://api.github.com"'
+            it.buildConfigField "String", "API_BASE_URL", '"https://api.github.com"'
         }
         debug {
         }
@@ -79,5 +79,5 @@ dependencies {
 
 
 
-    testCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
 }
