@@ -42,7 +42,7 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
      */
     public ReposAsyncTaskLoader(Context context, int page) {
         super(context);
-        Timber.i("askedPage seted : " + page);
+        Timber.i("askedPage setted : " + page);
         askedPage = page;
     }
 
@@ -105,7 +105,7 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
                     Timber.i("response Successful");
                     Repos repos = response.body();
                     if (mRepoList == null) {
-                        mRepoList = new ArrayList<Repo>(repos.getRepoList());
+                        mRepoList = new ArrayList<>(repos.getRepoList());
                     } else {
                         mRepoList.addAll(repos.getRepoList());
                     }
