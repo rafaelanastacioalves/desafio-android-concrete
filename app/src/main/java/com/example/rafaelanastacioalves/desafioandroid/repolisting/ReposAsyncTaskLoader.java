@@ -11,7 +11,6 @@ import com.example.rafaelanastacioalves.desafioandroid.retrofit.ServiceGenerator
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -19,9 +18,11 @@ import timber.log.Timber;
 
 /**
  * Created by rafaelanastacioalves on 08/07/17.
+ * This loader will be responsible for loading all the list. He will have to return the list until
+ * the page it is asked. If it is already loaded, or if the page loaded is higher than the page
+ * asked, the loader returns more than asked - until the page he has.
  */
 public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
-    private static final AtomicBoolean LOAD_MORE = new AtomicBoolean(false);
 
     // these are the most important variable that reflects what we have as "cache"
     private static List<Repo> mRepoList;
@@ -35,18 +36,14 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
     }
 
     /**
-     * Constructor in case we need load more. So we specify the status and new loadedPage to load
-     *
-     * @param context       The context
-     * @param page          The loadedPage the loader should be counting at
-     * @param isLoadingMore Flag to inform that it is supposed to load more on loading callback
+     * Constructor in case we need load more. The loader will load until the page specified.
+     *  @param context       The context
+     * @param page          The page until which we want the loader to load.
      */
-    public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore) {
+    public ReposAsyncTaskLoader(Context context, int page) {
         super(context);
-        Timber.i("new AsyncTaskLoader + loadingMore: " + isLoadingMore);
         Timber.i("askedPage seted : " + page);
         askedPage = page;
-        LOAD_MORE.set(isLoadingMore);
     }
 
     /**
@@ -62,9 +59,6 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
         // what position was started externally (less then the loaded? More?)
         Timber.i("onStartLoading");
         if (mRepoList == null || loadedPage == null) {
-            if (LOAD_MORE.get()) {
-                Timber.w("LOAD_MORE is set true! Shouldn't happen with null list...");
-            }
 
             // if we have no list, we reset state
             mRepoList = null;
@@ -139,13 +133,5 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
         return mRepoList;
     }
 
-    @Override
-    protected void onStopLoading() {
-        super.onStopLoading();
-        Timber.i("onStopLoading");
-        // if we were loading more, we now set status as false (not loading more)
-        if (LOAD_MORE.get()) {
-            LOAD_MORE.set(false);
-        }
-    }
+
 }

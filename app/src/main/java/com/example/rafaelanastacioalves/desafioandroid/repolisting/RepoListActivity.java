@@ -34,7 +34,6 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
     private static final int REPOS_LOADER_ID = 1;
     private static final String PAGE_KEY = "PAGE_KEY";
-    private static final String LOAD_MORE_KEY = "LOAD_MORE_KEY";
     private static int lastFirstVisiblePosition;
     private final LoaderManager.LoaderCallbacks<List<Repo>> mCallback = RepoListActivity.this;
     @SuppressWarnings("FieldCanBeLocal")
@@ -106,7 +105,6 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
                 //TODO
                 Bundle bundle = new Bundle();
                 bundle.putInt(PAGE_KEY, currentPage);
-                bundle.putBoolean(LOAD_MORE_KEY, true);
                 Timber.i("Asking to restart loader...");
                 getSupportLoaderManager().restartLoader(REPOS_LOADER_ID, bundle, mCallback);
             }
@@ -120,9 +118,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         Timber.i("onCreateLoader");
         if (args != null) {
             int page = args.getInt(PAGE_KEY, 1);
-            Boolean isLoadingMore = args.getBoolean(LOAD_MORE_KEY, false);
-            Timber.i("onCreateLoader: isLoadingMore: " + isLoadingMore);
-            return new ReposAsyncTaskLoader(this, page, isLoadingMore);
+            return new ReposAsyncTaskLoader(this, page);
 
         } else {
             return new ReposAsyncTaskLoader(this);
