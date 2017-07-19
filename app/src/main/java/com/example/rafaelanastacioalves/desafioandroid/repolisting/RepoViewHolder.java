@@ -1,5 +1,6 @@
 package com.example.rafaelanastacioalves.desafioandroid.repolisting;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -46,6 +47,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         container_linear_layout.setOnClickListener(this);
     }
 
+    @SuppressLint("SetTextI18n")
     public void bind(Repo aRepo, Context context) {
         title_text_view.setText(aRepo.getName());
         title_text_view.setTag(aRepo);

@@ -6,8 +6,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_material_light"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="PrivateResource">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:baselineAligned="false"
     android:orientation="horizontal" android:layout_width="fill_parent"
     android:padding="@dimen/default_material_screen_edge_margin"
     android:layout_height="wrap_content">
@@ -37,9 +39,9 @@
             android:layout_marginBottom="@dimen/default_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="@string/fake_description_text"
-            android:layout_weight="0.85"
             android:ellipsize="end"
-            android:maxLines="2" />
+            android:maxLines="2"
+            tools:ignore="InefficientWeight" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -52,38 +54,37 @@
                 android:layout_height="16dp"
                 android:src="@drawable/git_icon_forks_black"
                 android:tint="@color/colorAccent"
-                android:id="@+id/repo_imageview_forks" />
+                android:id="@+id/repo_imageview_forks"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/between_items_margin"
-                android:layout_marginLeft="@dimen/between_items_margin"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorAccent"
                 android:layout_gravity="center_vertical"
                 android:textStyle="bold"
                 tools:text="100"
-                android:text="-"
+                android:text="@string/blank_value"
                 android:id="@+id/repo_textview_number_forks" />
 
             <ImageView
                 android:layout_gravity="center_vertical"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="@dimen/default_internal_margin"
                 android:src="@drawable/git_icon_star_black"
                 android:tint="@color/colorAccent"
-                android:id="@+id/repo_imageview_stars" />
+                android:id="@+id/repo_imageview_stars"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 tools:text="100"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/colorAccent"
                 android:layout_marginStart="@dimen/between_items_margin"
-                android:layout_marginLeft="@dimen/between_items_margin"
-                android:text="-"
+                android:text="@string/blank_value"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

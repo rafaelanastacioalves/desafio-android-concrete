@@ -5,4 +5,5 @@
     <string name="small_text">Small Text......Small Text......Small Text......Small Text......Small Text......Small Text......</string>
     <string name="no_repositories">Nenhum repositório para exibir</string>
     <string name="no_pull_requests">Nenhum pull request para exibir</string>
+    <string name="blank_value">-</string>
 </resources>
