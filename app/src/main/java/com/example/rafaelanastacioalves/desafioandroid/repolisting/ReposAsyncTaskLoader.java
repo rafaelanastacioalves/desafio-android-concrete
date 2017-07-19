@@ -22,8 +22,11 @@ import timber.log.Timber;
  */
 public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
     private static final AtomicBoolean LOAD_MORE = new AtomicBoolean(false);
+
+    // these are the most important variable that reflects what we have as "cache"
     private static List<Repo> mRepoList;
-    private static int loadedPage;
+    private static Integer loadedPage;
+
     private int askedPage;
 
     public ReposAsyncTaskLoader(Context context) {
@@ -41,6 +44,7 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
     public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore) {
         super(context);
         Timber.i("new AsyncTaskLoader + loadingMore: " + isLoadingMore);
+        Timber.i("askedPage seted : " + page);
         askedPage = page;
         LOAD_MORE.set(isLoadingMore);
     }
@@ -57,21 +61,30 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
         //TODO Adapt so we take into consideration when we have list AND loaded page together and
         // what position was started externally (less then the loaded? More?)
         Timber.i("onStartLoading");
-        if (mRepoList == null) {
+        if (mRepoList == null || loadedPage == null) {
             if (LOAD_MORE.get()) {
                 Timber.w("LOAD_MORE is set true! Shouldn't happen with null list...");
             }
-            // if we have no list, we start from loadedPage 1
-            //TODO refactor so we don't have to set variables here
+
+            // if we have no list, we reset state
+            mRepoList = null;
             loadedPage = 0;
             askedPage =1;
+
+            // and ask to load
             forceLoad();
-        } else if (LOAD_MORE.get()) {
+
+        } else if (loadedPage<askedPage) {
+            // if we still have pages to load
             Timber.i("loadedPage: " + loadedPage);
             forceLoad();
         } else {
+            if(loadedPage>askedPage){
+                Timber.w("loaded page (" + loadedPage + ") higher than the asked page (" +askedPage + ")!" );
+            }
             Timber.i("we already have the result!");
             deliverResult(mRepoList);
+
         }
 
     }
