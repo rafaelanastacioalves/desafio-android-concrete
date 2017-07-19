@@ -23,46 +23,51 @@ import timber.log.Timber;
 public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
     private static final AtomicBoolean LOAD_MORE = new AtomicBoolean(false);
     private static List<Repo> mRepoList;
-    private static int page = 1;
+    private static int loadedPage;
+    private int askedPage;
 
     public ReposAsyncTaskLoader(Context context) {
+        //TODO add askedPage = 1 here?
         super(context);
     }
 
     /**
-     * Constructor in case we need load more. So we specify the status and new page to load
+     * Constructor in case we need load more. So we specify the status and new loadedPage to load
      *
      * @param context       The context
-     * @param page          The page the loader should be counting at
+     * @param page          The loadedPage the loader should be counting at
      * @param isLoadingMore Flag to inform that it is supposed to load more on loading callback
      */
     public ReposAsyncTaskLoader(Context context, int page, Boolean isLoadingMore) {
         super(context);
         Timber.i("new AsyncTaskLoader + loadingMore: " + isLoadingMore);
-        ReposAsyncTaskLoader.page = page;
+        askedPage = page;
         LOAD_MORE.set(isLoadingMore);
     }
 
     /**
-     * @return the current page the loader is able to load
+     * @return the current loadedPage the loader is able to load
      */
     public int getPage() {
-        return page;
+        return loadedPage;
     }
 
     @Override
     protected void onStartLoading() {
-
+        //TODO Adapt so we take into consideration when we have list AND loaded page together and
+        // what position was started externally (less then the loaded? More?)
         Timber.i("onStartLoading");
         if (mRepoList == null) {
             if (LOAD_MORE.get()) {
                 Timber.w("LOAD_MORE is set true! Shouldn't happen with null list...");
             }
-            // if we have no list, we start from page 1
-            page = 1;
+            // if we have no list, we start from loadedPage 1
+            //TODO refactor so we don't have to set variables here
+            loadedPage = 0;
+            askedPage =1;
             forceLoad();
         } else if (LOAD_MORE.get()) {
-            Timber.i("page: " + page);
+            Timber.i("loadedPage: " + loadedPage);
             forceLoad();
         } else {
             Timber.i("we already have the result!");
@@ -75,31 +80,48 @@ public class ReposAsyncTaskLoader extends AsyncTaskLoader<List<Repo>> {
     @Override
     public List<Repo> loadInBackground() {
         Timber.i("ReposAsyncTaskLoader loadInBackground");
-        GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
-        Call<Repos> call = githubClient.getRepos("language:Java",
-                "starts",
-                page
-        );
 
-        try {
-            Response<Repos> response = call.execute();
 
-            if (response.isSuccessful()) {
-                Timber.i("response Successful");
-                Repos repos = response.body();
-                if (mRepoList == null) {
-                    mRepoList = new ArrayList<Repo>(repos.getRepoList());
+        for (int page = loadedPage+1; page <= askedPage; page++){
+
+
+            GithubClient githubClient = ServiceGenerator.createService(GithubClient.class);
+            Call<Repos> call = githubClient.getRepos("language:Java",
+                    "starts",
+                    page
+            );
+
+            try {
+                Response<Repos> response = call.execute();
+
+                if (response.isSuccessful()) {
+                    Timber.i("response Successful");
+                    Repos repos = response.body();
+                    if (mRepoList == null) {
+                        mRepoList = new ArrayList<Repo>(repos.getRepoList());
+                    } else {
+                        mRepoList.addAll(repos.getRepoList());
+                    }
+
+                    loadedPage = page;
+
                 } else {
-                    mRepoList.addAll(repos.getRepoList());
+                    //TODO add error management here
+                    Timber.e(response.message());
                 }
-                return mRepoList;
-            } else {
-                Timber.e(response.message());
+
+            } catch (IOException e) {
+                //TODO add error management here
+                e.printStackTrace();
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+
+
+
+
         }
+
+
 
         return mRepoList;
     }
