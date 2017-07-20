@@ -76,7 +76,6 @@ public class RepoViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        int position = getAdapterPosition();
         aRecyclerViewListener.onClick(v, getAdapterPosition());
 
     }
