@@ -8,8 +8,8 @@ import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailActivity;
-import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailFragment;
+import com.example.rafaelanastacioalves.desafioandroid.pulllisting.PullRequestsActivity;
+import com.example.rafaelanastacioalves.desafioandroid.pulllisting.PullRequestsFragment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class PullMockedListTest {
     private String fileNamePullsListOKRespone = "pulls_list_ok_response.json";
 
     @Rule
-    public ActivityTestRule<RepoDetailActivity> mRepoListTestRule = new ActivityTestRule<RepoDetailActivity>(RepoDetailActivity.class, true, false);
+    public ActivityTestRule<PullRequestsActivity> mRepoListTestRule = new ActivityTestRule<PullRequestsActivity>(PullRequestsActivity.class, true, false);
 
     private MockWebServer server;
 
@@ -88,8 +88,8 @@ public class PullMockedListTest {
         );
 
         Intent intent = new Intent();
-        intent.putExtra(RepoDetailFragment.ARG_CREATOR, "elastic");
-        intent.putExtra(RepoDetailFragment.ARG_REPOSITORY, "elasticsearch");
+        intent.putExtra(PullRequestsFragment.ARG_CREATOR, "elastic");
+        intent.putExtra(PullRequestsFragment.ARG_REPOSITORY, "elasticsearch");
         mRepoListTestRule.launchActivity(intent);
 
         onView(allOf(withId(R.id.pull_textview_title), withText("Update synonym-tokenfilter.asciidoc"))).check(matches(isDisplayed()));
@@ -112,8 +112,8 @@ public class PullMockedListTest {
         );
 
         Intent intent = new Intent();
-        intent.putExtra(RepoDetailFragment.ARG_CREATOR, "elastic");
-        intent.putExtra(RepoDetailFragment.ARG_REPOSITORY, "elasticsearch");
+        intent.putExtra(PullRequestsFragment.ARG_CREATOR, "elastic");
+        intent.putExtra(PullRequestsFragment.ARG_REPOSITORY, "elasticsearch");
         mRepoListTestRule.launchActivity(intent);
 
 

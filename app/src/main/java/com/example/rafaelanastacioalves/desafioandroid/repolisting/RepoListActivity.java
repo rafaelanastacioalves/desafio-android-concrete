@@ -15,8 +15,8 @@ import com.example.rafaelanastacioalves.desafioandroid.R;
 import com.example.rafaelanastacioalves.desafioandroid.entities.Repo;
 import com.example.rafaelanastacioalves.desafioandroid.listeners.EndlessRecyclerOnScrollListener;
 import com.example.rafaelanastacioalves.desafioandroid.listeners.RecyclerViewClickListener;
-import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailActivity;
-import com.example.rafaelanastacioalves.desafioandroid.pulllisting.RepoDetailFragment;
+import com.example.rafaelanastacioalves.desafioandroid.pulllisting.PullRequestsActivity;
+import com.example.rafaelanastacioalves.desafioandroid.pulllisting.PullRequestsFragment;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import timber.log.Timber;
  * An activity representing a list of Repos. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link RepoDetailActivity} representing
+ * lead to a {@link PullRequestsActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
@@ -54,7 +54,7 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
         Timber.tag("LifeCycles");
         Timber.i("onCreate Activity");
 
-        setContentView(R.layout.activity_repo_list);
+        setContentView(R.layout.repo_list_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -173,17 +173,17 @@ public class RepoListActivity extends AppCompatActivity implements LoaderManager
 
         if (mTwoPane) {
             Bundle arguments = new Bundle();
-            arguments.putString(RepoDetailFragment.ARG_CREATOR, repo.getOwner().getLogin());
-            arguments.putString(RepoDetailFragment.ARG_REPOSITORY, repo.getName());
-            RepoDetailFragment fragment = new RepoDetailFragment();
+            arguments.putString(PullRequestsFragment.ARG_CREATOR, repo.getOwner().getLogin());
+            arguments.putString(PullRequestsFragment.ARG_REPOSITORY, repo.getName());
+            PullRequestsFragment fragment = new PullRequestsFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.repo_detail_container, fragment)
                     .commit();
         } else {
-            Intent i = new Intent(this, RepoDetailActivity.class);
-            i.putExtra(RepoDetailFragment.ARG_CREATOR, repo.getOwner().getLogin());
-            i.putExtra(RepoDetailFragment.ARG_REPOSITORY, repo.getName());
+            Intent i = new Intent(this, PullRequestsActivity.class);
+            i.putExtra(PullRequestsFragment.ARG_CREATOR, repo.getOwner().getLogin());
+            i.putExtra(PullRequestsFragment.ARG_REPOSITORY, repo.getName());
             startActivity(i);
         }
 

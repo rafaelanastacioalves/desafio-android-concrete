@@ -27,10 +27,10 @@ import timber.log.Timber;
 /**
  * A fragment representing a single Repo detail screen.
  * This fragment is either contained in a {@link RepoListActivity}
- * in two-pane mode (on tablets) or a {@link RepoDetailActivity}
+ * in two-pane mode (on tablets) or a {@link PullRequestsActivity}
  * on handsets.
  */
-public class RepoDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Pull>>, RecyclerViewClickListener {
+public class PullRequestsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Pull>>, RecyclerViewClickListener {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -51,7 +51,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public RepoDetailFragment() {
+    public PullRequestsFragment() {
     }
 
     @Override

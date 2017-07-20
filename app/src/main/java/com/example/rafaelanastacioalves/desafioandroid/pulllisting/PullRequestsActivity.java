@@ -17,12 +17,12 @@ import timber.log.Timber;
  * item details are presented side-by-side with a list of items
  * in a {@link RepoListActivity}.
  */
-public class RepoDetailActivity extends AppCompatActivity {
+public class PullRequestsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repo_detail);
+        setContentView(R.layout.pull_list_activity);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
@@ -32,7 +32,7 @@ public class RepoDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(getIntent().getStringExtra(RepoDetailFragment.ARG_REPOSITORY));
+            actionBar.setTitle(getIntent().getStringExtra(PullRequestsFragment.ARG_REPOSITORY));
 
         }
 
@@ -48,15 +48,15 @@ public class RepoDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Timber.i("RepoDetailFragment ARG CREATOR: " + getIntent().getStringExtra(RepoDetailFragment.ARG_CREATOR));
+            Timber.i("PullRequestsFragment ARG CREATOR: " + getIntent().getStringExtra(PullRequestsFragment.ARG_CREATOR));
             Bundle arguments = new Bundle();
-            arguments.putString(RepoDetailFragment.ARG_CREATOR,
-                    getIntent().getStringExtra(RepoDetailFragment.ARG_CREATOR));
+            arguments.putString(PullRequestsFragment.ARG_CREATOR,
+                    getIntent().getStringExtra(PullRequestsFragment.ARG_CREATOR));
 
-            Timber.i("RepoDetailFragment ARG REPOSITORY: " + getIntent().getStringExtra(RepoDetailFragment.ARG_REPOSITORY));
-            arguments.putString(RepoDetailFragment.ARG_REPOSITORY,
-                    getIntent().getStringExtra(RepoDetailFragment.ARG_REPOSITORY));
-            RepoDetailFragment fragment = new RepoDetailFragment();
+            Timber.i("PullRequestsFragment ARG REPOSITORY: " + getIntent().getStringExtra(PullRequestsFragment.ARG_REPOSITORY));
+            arguments.putString(PullRequestsFragment.ARG_REPOSITORY,
+                    getIntent().getStringExtra(PullRequestsFragment.ARG_REPOSITORY));
+            PullRequestsFragment fragment = new PullRequestsFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.repo_detail_container, fragment)
